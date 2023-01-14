@@ -61,7 +61,7 @@ from .workflow import (
 
 
 __title__ = 'Alfred-Workflow'
-__version__ = open(os.path.join(os.path.dirname(__file__), 'version')).read()
+__version__ = '2.0.0'
 __author__ = 'Dean Jackson'
 __licence__ = 'MIT'
 __copyright__ = 'Copyright 2014-2019 Dean Jackson'

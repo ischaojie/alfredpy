@@ -1,0 +1,99 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "alfredpy"
+description = 'Writing Alfred workflow using Python3'
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = ["alfred", "alfred-workflow", "python3"]
+authors = [
+  { name = "chaojie", email = "hi@chaojie.fun" },
+]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: MacOS :: MacOS X',
+    'Intended Audience :: Developers',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3',
+    'Topic :: Software Development :: Libraries',
+    'Topic :: Software Development :: Libraries :: Application Frameworks',
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/ischaojie/alfredpy#readme"
+Issues = "https://github.com/unknown/alfredpy/issues"
+Source = "https://github.com/unknown/alfredpy"
+
+[tool.hatch.version]
+path = "workflow/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "workflow/Notify.tgz"
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pyobjc-framework-Cocoa",
+  "coverage",
+  "pytest",
+  "pytest-cov",
+  "pytest-httpbin",
+  "pytest-localserver",
+  "flake8",
+  "flake8-docstrings",
+  "bandit",
+  "coveralls",
+  "codacy-coverage",
+]
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=alfredpy --cov=tests {args}"
+no-cov = "cov --no-cov {args}"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["37", "38", "39", "310", "311"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "workflow/__init__.py",
+]
+
+[tool.coverage.report]
+include = ["workflow/*"]
+show_missing = 1
+exclude_lines = [
+  # Have to re-enable the standard pragma
+  "no cov",
+  "pragma: no cover",
+  "pragma: nocover",
+
+  # Don't complain about missing debug-only code:
+  "def __repr__",
+  "if self.debug",
+
+  # Don't complain if tests don't hit defensive assertion code:
+  "raise AssertionError",
+  "raise NotImplementedError",
+
+  # Don't complain if non-runnable code isn't run:
+  "if 0",
+  "if False",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+ignore_errors = true
+
+[tool.coverage.html]
+directory = "coverage_report"
+
+[tool.bandit]
+skips = ["B301","B403","B404","B405","B603"]
+exclude_dirs = ["tests"]
