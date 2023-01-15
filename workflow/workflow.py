@@ -839,7 +839,7 @@ class Settings(dict):
         """Load cached settings from JSON file `self._filepath`."""
         data = {}
         with LockFile(self._filepath, 0.5):
-            with open(self._filepath, "rb") as fp:
+            with open(self._filepath, "r") as fp:
                 data.update(json.load(fp))
 
         self._original = deepcopy(data)
@@ -965,7 +965,7 @@ class Workflow(object):
         self._name = None
         self._cache_serializer = "cpickle"
         self._data_serializer = "cpickle"
-        self._info: str | None = None
+        self._info: dict | None = None
         self._info_loaded = False
         self._logger = None
         self._items = []
@@ -1008,7 +1008,7 @@ class Workflow(object):
         """Alfred version as :class:`~workflow.update.Version` object."""
         from .update import Version
 
-        return Version(self.alfred_env.get("version"))
+        return Version(self.alfred_env.get("version", ""))
 
     @property
     def alfred_env(self):
@@ -1230,7 +1230,7 @@ class Workflow(object):
         return args
 
     @property
-    def cachedir(self):
+    def cachedir(self) -> str:
         """Path to workflow's cache directory.
 
         The cache directory is a subdirectory of Alfred's own cache directory
@@ -1345,7 +1345,7 @@ class Workflow(object):
 
         return self._workflowdir
 
-    def cachefile(self, filename):
+    def cachefile(self, filename: str) -> str:
         """Path to ``filename`` in workflow's cache directory.
 
         Return absolute path to ``filename`` within your workflow's
@@ -1587,7 +1587,7 @@ class Workflow(object):
             self.logger.debug("no data stored for `%s`", name)
             return None
 
-        with open(metadata_path, "rb") as file_obj:
+        with open(metadata_path, "r") as file_obj:
             serializer_name = file_obj.read().strip()
 
         serializer = manager.serializer(serializer_name)
@@ -1611,7 +1611,7 @@ class Workflow(object):
 
             return None
 
-        with open(data_path, "rb") as file_obj:
+        with open(data_path, "r") as file_obj:
             data = serializer.load(file_obj)
 
         self.logger.debug("stored data loaded: %s", data_path)
@@ -1677,10 +1677,10 @@ class Workflow(object):
         @uninterruptible
         def _store():
             # Save file extension
-            with atomic_writer(metadata_path, "wb") as file_obj:
+            with atomic_writer(metadata_path, "w") as file_obj:
                 file_obj.write(serializer_name)
 
-            with atomic_writer(data_path, "wb") as file_obj:
+            with atomic_writer(data_path, "w") as file_obj:
                 serializer.dump(data, file_obj)
 
         _store()
@@ -1710,7 +1710,7 @@ class Workflow(object):
 
         if (age < max_age or max_age == 0) and os.path.exists(cache_path):
 
-            with open(cache_path, "rb") as file_obj:
+            with open(cache_path, "r") as file_obj:
                 self.logger.debug("loading cached data: %s", cache_path)
                 return serializer.load(file_obj)
 
@@ -1743,7 +1743,7 @@ class Workflow(object):
                 self.logger.debug("deleted cache file: %s", cache_path)
             return
 
-        with atomic_writer(cache_path, "wb") as file_obj:
+        with atomic_writer(cache_path, "w") as file_obj:
             serializer.dump(data, file_obj)
 
         self.logger.debug("cached data: %s", cache_path)
@@ -2830,7 +2830,7 @@ class Workflow(object):
             self._info = plistlib.load(fp)
         self._info_loaded = True
 
-    def _create(self, dirpath):
+    def _create(self, dirpath: str) -> str:
         """Create directory `dirpath` if it doesn't exist.
 
         :param dirpath: path to directory

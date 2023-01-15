@@ -35,6 +35,7 @@ path = "workflow/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
+  "workflow",
   "workflow/Notify.tgz"
 ]
 

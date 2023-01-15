@@ -85,7 +85,7 @@ class Cache(object):
 
     def save(self):
         """Save cache as JSON to `self.filepath`."""
-        with open(self.filepath, 'wb') as file_obj:
+        with open(self.filepath, 'w') as file_obj:
             json.dump(self._data, file_obj, indent=2, sort_keys=True)
 
     def add_github_info(self, workflow):
