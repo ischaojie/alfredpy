@@ -14,7 +14,7 @@ from __future__ import print_function, absolute_import
 
 import json
 import os
-from StringIO import StringIO
+from io import StringIO
 import sys
 
 import pytest
@@ -491,9 +491,8 @@ def test_run_fails_with_plain_text_output(infopl):
 
 def test_variables_plain_arg():
     """Arg-only returns string, not JSON."""
-    v = Variables(arg=u'test')
-    assert unicode(v) == u'test'
-    assert str(v) == 'test'
+    v = Variables(arg='test')
+    assert v == 'test'
 
 
 def test_variables_multiple_args(infopl):
@@ -502,8 +501,7 @@ def test_variables_multiple_args(infopl):
     js = '{"alfredworkflow": {"arg": ["one", "two"]}}'
     v = Variables(arg=arg)
     assert v.obj == {'alfredworkflow': {'arg': arg}}
-    assert str(v) == js
-    assert unicode(v) == js
+    assert v == js
 
 
 def test_variables_empty():

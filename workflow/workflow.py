@@ -18,9 +18,6 @@ See :ref:`setup` in the :ref:`user-manual` for an example of how to set
 up your Python script to best utilise the :class:`Workflow` object.
 
 """
-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import binascii
 import json
 import logging
@@ -579,7 +576,7 @@ class SerializerManager(object):
         return sorted(self._serializers.keys())
 
 
-class JSONSerializer(object):
+class JSONSerializer:
     """Wrapper around :mod:`json`. Sets ``indent`` and ``encoding``.
 
     .. versionadded:: 1.8
@@ -616,10 +613,10 @@ class JSONSerializer(object):
         :type file_obj: ``file`` object
 
         """
-        return json.dump(obj, file_obj, indent=2, encoding="utf-8")
+        return json.dump(obj, file_obj, indent=2)
 
 
-class CPickleSerializer(object):
+class CPickleSerializer:
     """Wrapper around :mod:`cPickle`. Sets ``protocol``.
 
     .. versionadded:: 1.8
@@ -644,7 +641,7 @@ class CPickleSerializer(object):
         return pickle.load(file_obj)
 
     @classmethod
-    def dump(cls, obj, file_obj):
+    def dump(cls, obj: object, file_obj):
         """Serialize object ``obj`` to open pickle file.
 
         .. versionadded:: 1.8
@@ -658,7 +655,7 @@ class CPickleSerializer(object):
         return pickle.dump(obj, file_obj, protocol=-1)
 
 
-class PickleSerializer(object):
+class PickleSerializer:
     """Wrapper around :mod:`pickle`. Sets ``protocol``.
 
     .. versionadded:: 1.8
@@ -866,8 +863,8 @@ class Settings(dict):
         data.update(self)
 
         with LockFile(self._filepath, 0.5):
-            with atomic_writer(self._filepath, "wb") as fp:
-                json.dump(data, fp, sort_keys=True, indent=2, encoding="utf-8")
+            with atomic_writer(self._filepath, "w") as fp:
+                json.dump(data, fp, sort_keys=True, indent=2)
 
     # dict methods
     def __setitem__(self, key, value):
@@ -1178,7 +1175,7 @@ class Workflow(object):
                 filepath = self.workflowfile("version")
 
                 if os.path.exists(filepath):
-                    with open(filepath, "rb") as fileobj:
+                    with open(filepath, "r") as fileobj:
                         version = fileobj.read()
 
             # info.plist
@@ -2829,7 +2826,8 @@ class Workflow(object):
     def _load_info_plist(self):
         """Load workflow info from ``info.plist``."""
         # info.plist should be in the directory above this one
-        self._info = plistlib.readPlist(self.workflowfile("info.plist"))
+        with open(self.workflowfile("info.plist"), 'rb') as fp:
+            self._info = plistlib.load(fp)
         self._info_loaded = True
 
     def _create(self, dirpath):

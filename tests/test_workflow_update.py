@@ -9,9 +9,6 @@
 #
 
 """Unit tests for Workflow's update API."""
-
-from __future__ import print_function
-
 from contextlib import contextmanager
 
 import os
@@ -28,13 +25,13 @@ from .util import (
     delete_info_plist,
     dump_env,
 )
-from test_update import fakeresponse, RELEASES_JSON, HTTP_HEADERS_JSON
+from .test_update import fakeresponse, RELEASES_JSON, HTTP_HEADERS_JSON
 
 
 UPDATE_SETTINGS = {
-    'github_slug': 'deanishe/alfred-workflow-dummy',
-    'version': 'v2.0',
-    'frequency': 1,
+    "github_slug": "deanishe/alfred-workflow-dummy",
+    "version": "v2.0",
+    "frequency": 1,
 }
 
 
@@ -51,7 +48,7 @@ def ctx(args=None, update_settings=None, clear=True):
     args = args or []
     if args:
         # Add placeholder for ARGV[0]
-        args = ['script'] + args
+        args = ["script"] + args
 
     create_info_plist()
     with WorkflowMock(args) as c:
@@ -64,25 +61,27 @@ def ctx(args=None, update_settings=None, clear=True):
 
 def test_auto_update():
     """Auto-update toggle active"""
+
     def fake(wf):
         return
 
-    with ctx(['workflow:autoupdate']) as (wf, c):
-        print('wf={0!r}, c={1!r}'.format(wf, c))
+    with ctx(["workflow:autoupdate"]) as (wf, c):
+        print("wf={0!r}, c={1!r}".format(wf, c))
         wf.args
-        print('wf.args={0!r}'.format(wf.args))
+        print("wf.args={0!r}".format(wf.args))
         wf.run(fake)
-        assert wf.settings.get('__workflow_autoupdate') is True
+        assert wf.settings.get("__workflow_autoupdate") is True
 
-    with ctx(['workflow:noautoupdate']) as (wf, c):
+    with ctx(["workflow:noautoupdate"]) as (wf, c):
         wf.args
         wf.run(fake)
-        assert wf.settings.get('__workflow_autoupdate') is False
-        print('update_available={0!r}'.format(wf.update_available))
+        assert wf.settings.get("__workflow_autoupdate") is False
+        print("update_available={0!r}".format(wf.update_available))
 
 
 def test_check_update(httpserver, alfred4):
     """Auto-update installs update"""
+
     def update(wf):
         wf.check_update()
 
@@ -91,39 +90,39 @@ def test_check_update(httpserver, alfred4):
     with fakeresponse(httpserver, RELEASES_JSON, HTTP_HEADERS_JSON):
         with ctx() as (wf, c):
             wf.run(update)
-            assert c.cmd[0] == '/usr/bin/python'
-            assert c.cmd[2] == '__workflow_update_check'
+            assert c.cmd[0] == "/usr/bin/python3"
+            assert c.cmd[2] == "__workflow_update_check"
 
         update_settings = UPDATE_SETTINGS.copy()
-        update_settings['prereleases'] = True
+        update_settings["prereleases"] = True
         with ctx(update_settings=update_settings) as (wf, c):
             wf.run(update)
-            assert c.cmd[0] == '/usr/bin/python'
-            assert c.cmd[2] == '__workflow_update_check'
+            assert c.cmd[0] == "/usr/bin/python"
+            assert c.cmd[2] == "__workflow_update_check"
 
 
 def test_install_update(httpserver, alfred4):
     """Auto-update installs update"""
+
     def fake(wf):
         return
 
     # Mock subprocess.call etc. so the script doesn't try to
     # update the workflow in Alfred
     with fakeresponse(httpserver, RELEASES_JSON, HTTP_HEADERS_JSON):
-        with ctx(['workflow:update'], clear=False) as (wf, c):
+        with ctx(["workflow:update"], clear=False) as (wf, c):
             wf.run(fake)
             wf.args
 
-            print('Magic update command : {0!r}'.format(c.cmd))
+            print("Magic update command : {0!r}".format(c.cmd))
 
-            assert c.cmd[0] == '/usr/bin/python'
-            assert c.cmd[2] == '__workflow_update_install'
+            assert c.cmd[0] == "/usr/bin/python3"
+            assert c.cmd[2] == "__workflow_update_install"
 
         update_settings = UPDATE_SETTINGS.copy()
-        del update_settings['version']
-        with env(alfred_workflow_version='v9.0'):
-            with ctx(['workflow:update'],
-                     update_settings, clear=False) as (wf, c):
+        del update_settings["version"]
+        with env(alfred_workflow_version="v9.0"):
+            with ctx(["workflow:update"], update_settings, clear=False) as (wf, c):
                 wf.run(fake)
                 wf.args
                 # Update command wasn't called
@@ -131,9 +130,8 @@ def test_install_update(httpserver, alfred4):
 
         # via update settings
         with env(alfred_workflow_version=None):
-            update_settings['version'] = 'v9.0'
-            with ctx(['workflow:update'],
-                     update_settings, clear=False) as (wf, c):
+            update_settings["version"] = "v9.0"
+            with ctx(["workflow:update"], update_settings, clear=False) as (wf, c):
                 wf.run(fake)
                 wf.args
                 # Update command wasn't called
@@ -141,8 +139,8 @@ def test_install_update(httpserver, alfred4):
 
         # unversioned
         with env(alfred_workflow_version=None):
-            del update_settings['version']
-            with ctx(['workflow:update'], update_settings) as (wf, c):
+            del update_settings["version"]
+            with ctx(["workflow:update"], update_settings) as (wf, c):
                 wf.run(fake)
                 with pytest.raises(ValueError):
                     wf.args
@@ -150,6 +148,7 @@ def test_install_update(httpserver, alfred4):
 
 def test_install_update_prereleases(httpserver, alfred4):
     """Auto-update installs update with pre-releases enabled"""
+
     def fake(wf):
         return
 
@@ -157,21 +156,21 @@ def test_install_update_prereleases(httpserver, alfred4):
     # update the workflow in Alfred
     with fakeresponse(httpserver, RELEASES_JSON, HTTP_HEADERS_JSON):
         update_settings = UPDATE_SETTINGS.copy()
-        update_settings['prereleases'] = True
-        with ctx(['workflow:update'], update_settings, clear=False) as (wf, c):
+        update_settings["prereleases"] = True
+        with ctx(["workflow:update"], update_settings, clear=False) as (wf, c):
             wf.run(fake)
             wf.args
 
-            print('Magic update command : {!r}'.format(c.cmd))
+            print("Magic update command : {!r}".format(c.cmd))
 
-            assert c.cmd[0] == '/usr/bin/python'
-            assert c.cmd[2] == '__workflow_update_install'
+            assert c.cmd[0] == "/usr/bin/python"
+            assert c.cmd[2] == "__workflow_update_install"
 
-        with env(alfred_workflow_version='v10.0-beta'):
+        with env(alfred_workflow_version="v10.0-beta"):
             update_settings = UPDATE_SETTINGS.copy()
-            update_settings['version'] = 'v10.0-beta'
-            update_settings['prereleases'] = True
-            with ctx(['workflow:update'], update_settings) as (wf, c):
+            update_settings["version"] = "v10.0-beta"
+            update_settings["prereleases"] = True
+            with ctx(["workflow:update"], update_settings) as (wf, c):
                 wf.run(fake)
                 wf.args
                 dump_env()
@@ -181,8 +180,8 @@ def test_install_update_prereleases(httpserver, alfred4):
 
 def test_update_available(httpserver, alfred4):
     """update_available property works"""
-    repo = UPDATE_SETTINGS['github_slug']
-    v = os.getenv('alfred_workflow_version')
+    repo = UPDATE_SETTINGS["github_slug"]
+    v = os.getenv("alfred_workflow_version")
     with fakeresponse(httpserver, RELEASES_JSON, HTTP_HEADERS_JSON):
         with ctx() as (wf, _):
             wf.reset()
@@ -196,9 +195,9 @@ def test_update_turned_off():
     # Check update isn't performed if user has turned off
     # auto-update
     with ctx() as (wf, _):
-        wf.settings['__workflow_autoupdate'] = False
+        wf.settings["__workflow_autoupdate"] = False
         assert wf.check_update() is None
 
 
-if __name__ == '__main__':  # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
     pytest.main([__file__])

@@ -16,7 +16,7 @@ import pytest
 
 from workflow import manager, Workflow
 
-from conftest import env, ENV_V4, ENV_V2
+from .conftest import env, ENV_V4, ENV_V2
 
 
 def test_directories(alfred4):

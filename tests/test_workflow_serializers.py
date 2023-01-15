@@ -9,9 +9,6 @@
 #
 
 """Unit tests for serializer classes."""
-
-from __future__ import print_function, absolute_import
-
 import os
 
 import pytest
@@ -61,12 +58,12 @@ def test_serialization(tempdir, manager):
         path = os.path.join(tempdir, 'test.{0}'.format(name))
         assert not os.path.exists(path)
 
-        with open(path, 'wb') as file_obj:
+        with open(path, 'w') as file_obj:
             serializer.dump(data, file_obj)
 
         assert os.path.exists(path)
 
-        with open(path, 'rb') as file_obj:
+        with open(path, 'r') as file_obj:
             data2 = serializer.load(file_obj)
 
         assert data == data2
