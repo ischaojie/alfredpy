@@ -157,7 +157,7 @@ class VersionFile(object):
     def __enter__(self):
         """Create version file."""
         with open(self.path, 'wb') as fp:
-            fp.write(self.version)
+            fp.write(self.version.encode())
         print('version {0} in {1}'.format(self.version, self.path),
               file=sys.stderr)
 
@@ -185,7 +185,7 @@ class FakePrograms(object):
         for name, retcode in self.programs.items():
             path = os.path.join(self.tempdir, name)
             with open(path, 'wb') as fp:
-                fp.write("#!/bin/bash\n\nexit {0}\n".format(retcode))
+                fp.write("#!/bin/bash\n\nexit {0}\n".format(retcode).encode("utf-8"))
             os.chmod(path, 0o700)
 
         # Add new programs to front of PATH

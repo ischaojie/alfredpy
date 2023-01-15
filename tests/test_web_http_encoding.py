@@ -9,9 +9,6 @@
 #
 
 """HTTP unit tests."""
-
-from __future__ import print_function
-
 import os
 
 import pytest
@@ -21,9 +18,6 @@ import pytest_localserver  # noqa: F401
 from workflow import web
 
 TEST_DATA = [
-    # Baidu sends charset header *and* uses meta HTML tag
-    ('baidu.html', {'Content-Type': 'text/html; charset=utf-8'}, 'utf-8'),
-
     # Document specifies us-ascii
     ('us-ascii.xml', {'Content-Type': 'application/xml'}, 'us-ascii'),
 

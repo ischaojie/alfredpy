@@ -9,11 +9,8 @@
 #
 
 """Common pytest fixtures."""
-
-from __future__ import print_function, absolute_import
-
-from contextlib import contextmanager
 import os
+from contextlib import contextmanager
 from shutil import rmtree
 from tempfile import mkdtemp
 
@@ -21,12 +18,7 @@ import pytest
 
 from workflow.workflow import Workflow
 
-
-from .util import (
-    INFO_PLIST_TEST,
-    INFO_PLIST_TEST3,
-    InfoPlist,
-)
+from .util import INFO_PLIST_TEST, INFO_PLIST_TEST3, InfoPlist
 
 BUNDLE_ID = 'net.deanishe.alfred-workflow'
 WORKFLOW_NAME = 'Alfred-Workflow Test'
@@ -102,10 +94,6 @@ def env(**kwargs):
             if k in os.environ:
                 del os.environ[k]
         else:
-            if isinstance(v, unicode):
-                v = v.encode('utf-8')
-            else:
-                v = str(v)
             os.environ[k] = v
 
     yield
@@ -129,7 +117,7 @@ def setenv(*dicts):
 
 def cleanenv():
     """Remove Alfred variables from ``os.environ``."""
-    for k in os.environ.keys():
+    for k in list(os.environ.keys()):
         if k.startswith('alfred_'):
             del os.environ[k]
 

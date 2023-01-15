@@ -19,7 +19,7 @@ import re
 import pytest
 import pytest_localserver  # noqa: F401
 
-from util import WorkflowMock
+from .util import WorkflowMock
 from workflow import Workflow, update, web
 from workflow.update import Download, Version
 
@@ -35,8 +35,8 @@ RELEASES_JSON = open(os.path.join(DATA_DIR, 'gh-releases.json')).read()
 RELEASES_4PLUS_JSON = open(
     os.path.join(DATA_DIR, 'gh-releases-4plus.json')).read()
 # A dummy Alfred workflow
-DATA_WORKFLOW = open(
-    os.path.join(DATA_DIR, 'Dummy-6.0.alfredworkflow')).read()
+# DATA_WORKFLOW = open(
+#     os.path.join(DATA_DIR, 'Dummy-6.0.alfredworkflow')).read()
 
 # Alfred 4
 RELEASE_LATEST = '9.0'

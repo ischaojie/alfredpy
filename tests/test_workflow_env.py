@@ -46,8 +46,7 @@ def test_env(wf):
         if k in ('debug', 'version_build', 'theme_subtext'):
             assert int(v) == wf.alfred_env[k]
         else:
-            assert isinstance(wf.alfred_env[k], unicode)
-            assert unicode(v) == wf.alfred_env[k]
+            assert v == wf.alfred_env[k]
 
     assert wf.datadir == env['alfred_workflow_data']
     assert wf.cachedir == env['alfred_workflow_cache']

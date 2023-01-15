@@ -27,8 +27,8 @@ dynamic = ["version"]
 
 [project.urls]
 Documentation = "https://github.com/ischaojie/alfredpy#readme"
-Issues = "https://github.com/unknown/alfredpy/issues"
-Source = "https://github.com/unknown/alfredpy"
+Issues = "https://github.com/ischaojie/alfredpy/issues"
+Source = "https://github.com/ischaojie/alfredpy"
 
 [tool.hatch.version]
 path = "workflow/__init__.py"
@@ -44,7 +44,6 @@ dependencies = [
   "coverage",
   "pytest",
   "pytest-cov",
-  "pytest-httpbin",
   "pytest-localserver",
   "flake8",
   "flake8-docstrings",
@@ -53,7 +52,7 @@ dependencies = [
   "codacy-coverage",
 ]
 [tool.hatch.envs.default.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=alfredpy --cov=tests {args}"
+cov = "coverage run -m pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=workflow --cov=tests {args}"
 no-cov = "cov --no-cov {args}"
 
 [[tool.hatch.envs.test.matrix]]

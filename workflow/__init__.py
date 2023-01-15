@@ -9,10 +9,6 @@
 #
 
 """A helper library for `Alfred <http://www.alfredapp.com/>`_ workflows."""
-
-import os
-
-# Workflow objects
 from .workflow import Workflow, manager
 from .workflow3 import Variables, Workflow3
 
@@ -60,11 +56,7 @@ from .workflow import (
 )
 
 
-__title__ = 'Alfred-Workflow'
 __version__ = '2.0.0'
-__author__ = 'Dean Jackson'
-__licence__ = 'MIT'
-__copyright__ = 'Copyright 2014-2019 Dean Jackson'
 
 __all__ = [
     'Variables',

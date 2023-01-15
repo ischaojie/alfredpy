@@ -22,9 +22,6 @@ of them, and they won't be sent to Alfred when you call
 :meth:`Workflow3.send_feedback()`.
 
 """
-
-from __future__ import print_function, unicode_literals, absolute_import
-
 import json
 import os
 import sys
@@ -88,7 +85,7 @@ class Variables(dict):
 
         return {'alfredworkflow': o}
 
-    def __unicode__(self):
+    def __str__(self) -> str:
         """Convert to ``alfredworkflow`` JSON object.
 
         Returns:
@@ -97,20 +94,19 @@ class Variables(dict):
         """
         if not self and not self.config:
             if not self.arg:
-                return u''
-            if isinstance(self.arg, unicode):
-                return self.arg
+                return ''
+            return self.arg
 
         return json.dumps(self.obj)
 
-    def __str__(self):
+    def __bytes__(self) -> bytes:
         """Convert to ``alfredworkflow`` JSON object.
 
         Returns:
             str: UTF-8 encoded ``alfredworkflow`` JSON object
 
         """
-        return unicode(self).encode('utf-8')
+        return str(self).encode('utf-8')
 
 
 class Modifier(object):

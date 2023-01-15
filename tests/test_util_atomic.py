@@ -17,7 +17,7 @@ import os
 
 import pytest
 
-from util import DEFAULT_SETTINGS
+from .util import DEFAULT_SETTINGS
 
 from workflow.util import atomic_writer
 
@@ -30,7 +30,7 @@ def _settings(tempdir):
 def test_write_file_succeed(tempdir):
     """Succeed, no temp file left"""
     p = _settings(tempdir)
-    with atomic_writer(p, 'wb') as fp:
+    with atomic_writer(p, 'w') as fp:
         json.dump(DEFAULT_SETTINGS, fp)
 
     assert len(os.listdir(tempdir)) == 1
@@ -72,11 +72,11 @@ def test_failed_without_overwriting(tempdir):
     mockSettings = {}
 
     def write():
-        with atomic_writer(p, 'wb') as fp:
+        with atomic_writer(p, 'w') as fp:
             json.dump(mockSettings, fp)
             raise Exception()
 
-    with atomic_writer(p, 'wb') as fp:
+    with atomic_writer(p, 'w') as fp:
         json.dump(DEFAULT_SETTINGS, fp)
 
     assert len(os.listdir(tempdir)) == 1
@@ -88,7 +88,7 @@ def test_failed_without_overwriting(tempdir):
     assert len(os.listdir(tempdir)) == 1
     assert os.path.exists(p)
 
-    with open(p, 'rb') as fp:
+    with open(p, 'r') as fp:
         real_settings = json.load(fp)
 
     assert DEFAULT_SETTINGS == real_settings

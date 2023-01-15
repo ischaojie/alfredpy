@@ -33,19 +33,17 @@ from workflow.util import (
     search_in_alfred,
     set_config,
     set_theme,
-    unicodify,
     unset_config,
-    utf8ify,
 )
 
 from .util import MockCall
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def testfile(request):
     """Test filepath."""
     tempdir = tempfile.mkdtemp()
-    testfile = os.path.join(tempdir, 'testfile')
+    testfile = os.path.join(tempdir, "testfile")
 
     def rm():
         shutil.rmtree(tempdir)
@@ -55,59 +53,25 @@ def testfile(request):
     return testfile
 
 
-def test_unicodify():
-    """Unicode decoding."""
-    data = [
-        # input, normalisation form, expected output
-        (u'Köln', None, u'Köln'),
-        ('Köln', None, u'Köln'),
-        (u'Köln', 'NFC', u'K\xf6ln'),
-        (u'Köln', 'NFD', u'Ko\u0308ln'),
-        ('UTF-8', None, u'UTF-8'),
-    ]
-
-    for b, n, x in data:
-        s = unicodify(b, norm=n)
-        assert s == x
-        assert isinstance(s, unicode)
-
-
-def test_utf8ify():
-    """UTF-8 encoding."""
-    data = [
-        # input, expected output
-        (u'Köln', 'Köln'),
-        ('UTF-8', 'UTF-8'),
-        (10, '10'),
-        ([1, 2, 3], '[1, 2, 3]'),
-    ]
-
-    for s, x in data:
-        r = utf8ify(s)
-        assert x == r
-        assert isinstance(x, str)
-
-
 def test_applescript_escape():
     """Escape AppleScript strings."""
     data = [
         # input, expected output
-        (u'no change', u'no change'),
-        (u'has "quotes" in it', u'has " & quote & "quotes" & quote & " in it'),
+        ("no change", "no change"),
+        ('has "quotes" in it', 'has " & quote & "quotes" & quote & " in it'),
     ]
 
     for s, x in data:
         r = applescriptify(s)
         assert x == r
-        assert isinstance(x, unicode)
 
 
 def test_run_command():
     """Run command."""
     data = [
         # command, expected output
-        ([u'echo', '-n', 1], '1'),
-        ([u'echo', '-n', u'Köln'], 'Köln'),
+        (["echo", "-n", 1], "1"),
+        (["echo", "-n", "Köln"], "Köln"),
     ]
 
     for cmd, x in data:
@@ -115,21 +79,21 @@ def test_run_command():
         assert r == x
 
     with pytest.raises(subprocess.CalledProcessError):
-        run_command(['/usr/bin/false'])
+        run_command(["/usr/bin/false"])
 
 
 def test_run_applescript(testfile):
     """Run AppleScript."""
     # Run script passed as text
     out = run_applescript('return "1"')
-    assert out.strip() == '1'
+    assert out.strip() == "1"
 
     # Run script file
-    with open(testfile, 'wb') as fp:
+    with open(testfile, "w") as fp:
         fp.write('return "1"')
 
     out = run_applescript(testfile)
-    assert out.strip() == '1'
+    assert out.strip() == "1"
 
     # Test args
     script = """
@@ -138,7 +102,7 @@ def test_run_applescript(testfile):
     end run
     """
     out = run_applescript(script, 1)
-    assert out.strip() == '1'
+    assert out.strip() == "1"
 
 
 def test_run_jxa(testfile):
@@ -151,14 +115,14 @@ def test_run_jxa(testfile):
 
     # Run script passed as text
     out = run_jxa(script)
-    assert out.strip() == '1'
+    assert out.strip() == "1"
 
     # Run script file
-    with open(testfile, 'wb') as fp:
+    with open(testfile, "w") as fp:
         fp.write(script)
 
     out = run_jxa(testfile)
-    assert out.strip() == '1'
+    assert out.strip() == "1"
 
     # Test args
     script = """
@@ -167,21 +131,21 @@ def test_run_jxa(testfile):
     }
     """
     out = run_jxa(script, 1)
-    assert out.strip() == '1'
+    assert out.strip() == "1"
 
 
 def test_app_name():
     """Appname"""
     tests = [
-        (None, 'com.runningwithcrayons.Alfred'),
-        ('', 'com.runningwithcrayons.Alfred'),
-        ('4', 'com.runningwithcrayons.Alfred'),
-        ('5', 'com.runningwithcrayons.Alfred'),
-        ('twelty', 'com.runningwithcrayons.Alfred'),
-        ('3', 'Alfred 3'),
-        ('3.8', 'Alfred 3'),
-        ('3.1-beta', 'Alfred 3'),
-        ('3thirty', 'Alfred 3'),
+        (None, "com.runningwithcrayons.Alfred"),
+        ("", "com.runningwithcrayons.Alfred"),
+        ("4", "com.runningwithcrayons.Alfred"),
+        ("5", "com.runningwithcrayons.Alfred"),
+        ("twelty", "com.runningwithcrayons.Alfred"),
+        ("3", "Alfred 3"),
+        ("3.8", "Alfred 3"),
+        ("3.1-beta", "Alfred 3"),
+        ("3thirty", "Alfred 3"),
     ]
 
     for version, wanted in tests:
@@ -191,9 +155,9 @@ def test_app_name():
 
 def test_run_trigger(alfred4):
     """Call External Trigger"""
-    name = 'test'
-    bundleid = 'com.example.workflow'
-    arg = 'test arg'
+    name = "test"
+    bundleid = "com.example.workflow"
+    arg = "test arg"
 
     # With bundle ID
     script = (
@@ -201,7 +165,7 @@ def test_run_trigger(alfred4):
         '.runTrigger("test", '
         '{"inWorkflow": "com.example.workflow"});'
     )
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         run_trigger(name, bundleid)
         assert m.cmd == cmd
@@ -213,7 +177,7 @@ def test_run_trigger(alfred4):
         '{"inWorkflow": "com.example.workflow", '
         '"withArgument": "test arg"});'
     )
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         run_trigger(name, bundleid, arg)
         assert m.cmd == cmd
@@ -224,7 +188,7 @@ def test_run_trigger(alfred4):
         '.runTrigger("test", '
         '{"inWorkflow": "net.deanishe.alfred-workflow"});'
     )
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         run_trigger(name)
         assert m.cmd == cmd
@@ -232,9 +196,9 @@ def test_run_trigger(alfred4):
 
 def test_set_config(alfred4):
     """Set Configuration."""
-    name = 'test'
-    bundleid = 'com.example.workflow'
-    value = 'test'
+    name = "test"
+    bundleid = "com.example.workflow"
+    value = "test"
 
     # With bundle ID
     script = (
@@ -245,7 +209,7 @@ def test_set_config(alfred4):
         '"toValue": "test"});'
     )
 
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         set_config(name, value, bundleid)
         assert m.cmd == cmd
@@ -259,7 +223,7 @@ def test_set_config(alfred4):
         '"toValue": "test"});'
     )
 
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         set_config(name, value, bundleid, True)
         assert m.cmd == cmd
@@ -272,7 +236,7 @@ def test_set_config(alfred4):
         '"inWorkflow": "net.deanishe.alfred-workflow", '
         '"toValue": "test"});'
     )
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         set_config(name, value)
         assert m.cmd == cmd
@@ -280,8 +244,8 @@ def test_set_config(alfred4):
 
 def test_unset_config(alfred4):
     """Unset Configuration."""
-    name = 'test'
-    bundleid = 'com.example.workflow'
+    name = "test"
+    bundleid = "com.example.workflow"
 
     # With bundle ID
     script = (
@@ -289,25 +253,25 @@ def test_unset_config(alfred4):
         '.removeConfiguration("test", '
         '{"inWorkflow": "com.example.workflow"});'
     )
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         unset_config(name, bundleid)
         assert m.cmd == cmd
 
     # With bundle ID from env
-    os.environ['alfred_workflow_bundleid'] = bundleid
+    os.environ["alfred_workflow_bundleid"] = bundleid
     try:
-        cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+        cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
         with MockCall() as m:
             unset_config(name)
             assert m.cmd == cmd
     finally:
-        del os.environ['alfred_workflow_bundleid']
+        del os.environ["alfred_workflow_bundleid"]
 
 
 def test_search_in_alfred(alfred4):
     """Search."""
-    query = 'badger, badger, badger'
+    query = "badger, badger, badger"
 
     # With query
     script = (
@@ -315,7 +279,7 @@ def test_search_in_alfred(alfred4):
         '.search("badger, badger, badger");'
     )
 
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         search_in_alfred(query)
         assert m.cmd == cmd
@@ -323,7 +287,7 @@ def test_search_in_alfred(alfred4):
     # Without query (just opens Alfred)
     script = 'Application("com.runningwithcrayons.Alfred").search("");'
 
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         search_in_alfred()
         assert m.cmd == cmd
@@ -331,14 +295,14 @@ def test_search_in_alfred(alfred4):
 
 def test_action_in_alfred(alfred4):
     """Action."""
-    paths = ['~/Documents', '~/Desktop']
+    paths = ["~/Documents", "~/Desktop"]
 
     script = (
         'Application("com.runningwithcrayons.Alfred")'
         '.action(["~/Documents", "~/Desktop"]);'
     )
 
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         action_in_alfred(paths)
         assert m.cmd == cmd
@@ -346,10 +310,10 @@ def test_action_in_alfred(alfred4):
 
 def test_browse_in_alfred(alfred4):
     """Browse."""
-    path = '~/Documents'
+    path = "~/Documents"
     script = 'Application("com.runningwithcrayons.Alfred").browse("~/Documents");'
 
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         browse_in_alfred(path)
         assert m.cmd == cmd
@@ -357,13 +321,13 @@ def test_browse_in_alfred(alfred4):
 
 def test_reload_workflow(alfred4):
     """Reload workflow."""
-    bundleid = 'com.example.workflow'
+    bundleid = "com.example.workflow"
     script = (
         'Application("com.runningwithcrayons.Alfred")'
         '.reloadWorkflow("com.example.workflow");'
     )
 
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         reload_workflow(bundleid)
         assert m.cmd == cmd
@@ -373,7 +337,7 @@ def test_reload_workflow(alfred4):
         'Application("com.runningwithcrayons.Alfred")'
         '.reloadWorkflow("net.deanishe.alfred-workflow");'
     )
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         reload_workflow()
         assert m.cmd == cmd
@@ -381,13 +345,10 @@ def test_reload_workflow(alfred4):
 
 def test_set_theme(alfred4):
     """Set Alfred theme."""
-    theme = 'Alfred Dark'
-    script = (
-        'Application("com.runningwithcrayons.Alfred")'
-        '.setTheme("Alfred Dark");'
-    )
+    theme = "Alfred Dark"
+    script = 'Application("com.runningwithcrayons.Alfred")' '.setTheme("Alfred Dark");'
 
-    cmd = ['/usr/bin/osascript', '-l', 'JavaScript', '-e', script]
+    cmd = ["/usr/bin/osascript", "-l", "JavaScript", "-e", script]
     with MockCall() as m:
         set_theme(theme)
         assert m.cmd == cmd
@@ -396,12 +357,10 @@ def test_set_theme(alfred4):
 def test_appinfo():
     """App info for Safari."""
     for name, bundleid, path in [
-        (u'Safari', u'com.apple.Safari', u'/Applications/Safari.app'),
-        (u'Console', u'com.apple.Console',
-            u'/Applications/Utilities/Console.app'),
+        ("Safari", "com.apple.Safari", "/Applications/Safari.app"),
+        ("Console", "com.apple.Console", "/Applications/Utilities/Console.app"),
         # Catalina
-        (u'Console', u'com.apple.Console',
-            u'/System/Applications/Utilities/Console.app'),
+        ("Console", "com.apple.Console", "/System/Applications/Utilities/Console.app"),
     ]:
 
         if not os.path.exists(path):
@@ -412,13 +371,11 @@ def test_appinfo():
         assert info.name == name
         assert info.path == path
         assert info.bundleid == bundleid
-        for s in info:
-            assert isinstance(s, unicode)
 
     # Non-existant app
     info = appinfo("Big, Hairy Man's Special Breakfast Pants")
     assert info is None
 
 
-if __name__ == '__main__':  # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
     pytest.main([__file__])
