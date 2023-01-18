@@ -217,7 +217,7 @@ def test_custom_cache_serializer(wf):
     """Custom cache serializer"""
     data = {'key1': 'value1'}
 
-    class MySerializer(object):
+    class MySerializer:
         """Simple serializer"""
 
         @classmethod

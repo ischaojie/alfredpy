@@ -9,9 +9,6 @@
 #
 
 """Unit tests for update mechanism."""
-
-from __future__ import print_function
-
 from contextlib import contextmanager
 import os
 import re

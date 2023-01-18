@@ -31,9 +31,6 @@ Python library (upon which the `web.py` API is based) or the
 command-line tool `cURL <http://curl.haxx.se/>`_ instead.
 
 """
-
-from __future__ import print_function
-
 import codecs
 import json
 import mimetypes

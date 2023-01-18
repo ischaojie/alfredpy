@@ -22,6 +22,7 @@ import sys
 import os
 import subprocess
 import pickle
+from typing import Any
 
 from workflow import Workflow
 
@@ -41,7 +42,7 @@ def _log():
     return wf().logger
 
 
-def _arg_cache(name):
+def _arg_cache(name: str) -> str:
     """Return path to pickle cache file for arguments.
 
     :param name: name of task
@@ -53,7 +54,7 @@ def _arg_cache(name):
     return wf().cachefile(name + '.argcache')
 
 
-def _pid_file(name):
+def _pid_file(name: str) -> str:
     """Return path to PID file for ``name``.
 
     :param name: name of task
@@ -65,7 +66,7 @@ def _pid_file(name):
     return wf().cachefile(name + '.pid')
 
 
-def _process_exists(pid):
+def _process_exists(pid: int) -> bool:
     """Check if a process with PID ``pid`` exists.
 
     :param pid: PID to check
@@ -81,7 +82,7 @@ def _process_exists(pid):
     return True
 
 
-def _job_pid(name):
+def _job_pid(name: str) -> int | None:
     """Get PID of job or `None` if job does not exist.
 
     Args:
@@ -94,7 +95,7 @@ def _job_pid(name):
     if not os.path.exists(pidfile):
         return
 
-    with open(pidfile, 'rb') as fp:
+    with open(pidfile, 'r') as fp:
         pid = int(fp.read())
 
         if _process_exists(pid):
@@ -103,7 +104,7 @@ def _job_pid(name):
     os.unlink(pidfile)
 
 
-def is_running(name):
+def is_running(name: str) -> bool:
     """Test whether task ``name`` is currently running.
 
     :param name: name of task
@@ -138,7 +139,7 @@ def _background(pidfile, stdin='/dev/null', stdout='/dev/null',
             if pid > 0:
                 if write:  # write PID of child process to `pidfile`
                     tmp = pidfile + '.tmp'
-                    with open(tmp, 'wb') as fp:
+                    with open(tmp, 'w') as fp:
                         fp.write(str(pid))
                     os.rename(tmp, pidfile)
                 if wait:  # wait for child process to exit
@@ -191,7 +192,7 @@ def kill(name, sig=signal.SIGTERM):
     return True
 
 
-def run_in_background(name, args, **kwargs):
+def run_in_background(name: str, args: list[str], **kwargs: Any) -> int | None:
     r"""Cache arguments then call this script again via :func:`subprocess.call`.
 
     :param name: name of job
@@ -260,7 +261,7 @@ def main(wf):  # pragma: no cover
     _background(pidfile)
 
     # Load cached arguments
-    with open(argcache, 'rb') as fp:
+    with open(argcache, 'r') as fp:
         data = pickle.load(fp)
 
     # Cached arguments

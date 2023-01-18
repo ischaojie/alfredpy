@@ -278,7 +278,7 @@ class Version:
                     raise ValueError("suffix must start with - : " + suffix)
                 self.suffix = suffix[1:]
 
-    def _parse_dotted_string(self, s: str) -> list[int]:
+    def _parse_dotted_string(self, s: str) -> list[int | str]:
         """Parse string ``s`` into list of ints and strings."""
         parsed = []
         parts = s.split(".")
@@ -349,7 +349,7 @@ class Version:
 
     def __repr__(self):
         """Return 'code' representation of `Version`."""
-        return "Version('{0}')".format(str(self))
+        return "Version('{0}')".format(self.__str__)
 
 
 def retrieve_download(dl):

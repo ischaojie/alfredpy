@@ -507,8 +507,7 @@ def test_variables_multiple_args(infopl):
 def test_variables_empty():
     """Empty Variables returns empty string."""
     v = Variables()
-    assert unicode(v) == u''
-    assert str(v) == ''
+    assert v == ''
 
 
 def test_variables():
@@ -532,12 +531,12 @@ def test_variables_unicode():
     d = {
         'alfredworkflow':
             {
-                'arg': u'fübar',
+                'arg': 'fübar',
                 'variables': {
-                    'englisch': u'englisch',
-                    u'französisch': u'französisch',
+                    'englisch': 'englisch',
+                    'französisch': 'französisch',
                 },
-                'config': {u'über': u'über'}
+                'config': {'über': 'über'}
             }
     }
     print(repr(v.obj))
@@ -545,7 +544,7 @@ def test_variables_unicode():
     assert v.obj == d
 
     # Round-trip to JSON and back
-    d2 = json.loads(unicode(v))
+    d2 = json.loads(v)
     assert d2 == d
 
 

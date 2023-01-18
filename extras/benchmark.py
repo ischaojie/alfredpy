@@ -202,7 +202,7 @@ class Benchmark(object):
 
             start = time.time()
             try:
-                with open(os.devnull, 'wb') as devnull:
+                with open(os.devnull, 'w') as devnull:
                     subprocess.check_call(self.cmd, cwd=self.cwd, env=env,
                                           stdout=devnull,
                                           stderr=subprocess.STDOUT,

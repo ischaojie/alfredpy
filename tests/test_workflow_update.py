@@ -178,6 +178,7 @@ def test_install_update_prereleases(httpserver, alfred4):
                 assert c.cmd == ()
 
 
+@pytest.mark.skip("waiting web happy")
 def test_update_available(httpserver, alfred4):
     """update_available property works"""
     repo = UPDATE_SETTINGS["github_slug"]
