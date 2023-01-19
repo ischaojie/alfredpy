@@ -16,7 +16,7 @@ from tempfile import mkdtemp
 
 import pytest
 
-from workflow.workflow import Workflow
+from alfredpy.workflow import Workflow
 
 from .util import INFO_PLIST_TEST, INFO_PLIST_TEST3, InfoPlist
 

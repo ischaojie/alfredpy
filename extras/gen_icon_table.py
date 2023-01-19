@@ -18,7 +18,7 @@ from __future__ import print_function, unicode_literals
 
 import os
 import subprocess
-import workflow
+import alfredpy
 
 outdir = os.path.join(os.path.dirname(os.path.dirname(__file__)),
                       'docs', '_static')
@@ -34,9 +34,9 @@ entries = []
 
 col1 = col2 = 0
 
-for name in dir(workflow):
+for name in dir(alfredpy):
     if name.startswith('ICON_'):
-        const = getattr(workflow, name)
+        const = getattr(alfredpy, name)
         # print('{} : {}'.format(name, const))
         filename = '{}.png'.format(name)
         make_thumbnail(const, os.path.join(outdir, filename))

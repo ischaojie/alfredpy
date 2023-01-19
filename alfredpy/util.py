@@ -421,7 +421,7 @@ def appinfo(name):
 
 
 @contextmanager
-def atomic_writer(fpath, mode):
+def atomic_writer(fpath: str, mode: str):
     """Atomic file writer.
 
     .. versionadded:: 1.12

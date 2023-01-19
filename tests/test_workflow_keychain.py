@@ -10,7 +10,7 @@ from __future__ import print_function, unicode_literals
 
 import pytest
 
-from workflow.workflow import PasswordNotFound, KeychainError
+from alfredpy.workflow import PasswordNotFound, KeychainError
 
 from .conftest import BUNDLE_ID
 

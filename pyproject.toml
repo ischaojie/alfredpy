@@ -31,12 +31,12 @@ Issues = "https://github.com/ischaojie/alfredpy/issues"
 Source = "https://github.com/ischaojie/alfredpy"
 
 [tool.hatch.version]
-path = "workflow/__init__.py"
+path = "alfredpy/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
-  "workflow",
-  "workflow/Notify.tgz"
+  "alfredpy",
+  "alfredpy/Notify.tgz"
 ]
 
 [tool.hatch.envs.default]
@@ -53,7 +53,7 @@ dependencies = [
   "codacy-coverage",
 ]
 [tool.hatch.envs.default.scripts]
-cov = "coverage run -m pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=workflow --cov=tests {args}"
+cov = "coverage run -m pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=alfredpy --cov=tests {args}"
 no-cov = "cov --no-cov {args}"
 
 [[tool.hatch.envs.test.matrix]]
@@ -63,12 +63,12 @@ python = ["37", "38", "39", "310", "311"]
 branch = true
 parallel = true
 omit = [
-  "workflow/__init__.py",
+  "alfredpy/__init__.py",
 ]
 
 [tool.coverage.report]
-include = ["workflow/*"]
-show_missing = 1
+include = ["alfredpy/*"]
+show_missing = true
 exclude_lines = [
   # Have to re-enable the standard pragma
   "no cov",

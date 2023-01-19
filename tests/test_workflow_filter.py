@@ -9,8 +9,8 @@
 from __future__ import print_function, unicode_literals
 
 import pytest
-
-from workflow.workflow import (
+from alfredpy import Workflow
+from alfredpy.workflow import (
     MATCH_ALL, MATCH_ALLCHARS,
     MATCH_ATOM, MATCH_CAPITALS, MATCH_STARTSWITH,
     MATCH_SUBSTRING, MATCH_INITIALS_CONTAIN,
@@ -112,7 +112,7 @@ def test_filter_min_score(wf):
     assert len(results) == 6
 
 
-def test_filter_folding(wf):
+def test_filter_folding(wf: Workflow):
     """Filter: diacritic folding"""
     for key, query in SEARCH_ITEMS_DIACRITICS:
         results = wf.filter(query, [key], min_score=90,

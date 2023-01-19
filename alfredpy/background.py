@@ -16,6 +16,8 @@ while you fetch fresh data in the background.
 See :ref:`the User Manual <background-processes>` for more information
 and examples.
 """
+from __future__ import annotations
+
 from builtins import str
 import signal
 import sys
@@ -24,7 +26,7 @@ import subprocess
 import pickle
 from typing import Any
 
-from workflow import Workflow
+from alfredpy import Workflow
 
 __all__ = ['is_running', 'run_in_background']
 
@@ -95,7 +97,7 @@ def _job_pid(name: str) -> int | None:
     if not os.path.exists(pidfile):
         return
 
-    with open(pidfile, 'r') as fp:
+    with open(pidfile, 'rb') as fp:
         pid = int(fp.read())
 
         if _process_exists(pid):

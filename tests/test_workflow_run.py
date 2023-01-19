@@ -10,7 +10,7 @@ import sys
 
 import pytest
 
-from workflow.workflow import Workflow
+from alfredpy.workflow import Workflow
 
 from .conftest import env
 

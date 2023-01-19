@@ -20,8 +20,9 @@
    :class:`~workflow.workflow.Workflow` objects.
 
 """
+from __future__ import annotations
+
 from builtins import str
-from builtins import object
 from collections import defaultdict
 from functools import total_ordering
 import json
@@ -31,7 +32,7 @@ import re
 import subprocess
 
 from . import workflow
-from workflow import web
+from alfredpy import web
 
 # __all__ = []
 
@@ -338,7 +339,7 @@ class Version:
         """Implement comparison."""
         return not self.__lt__(other)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return semantic version string."""
         vstr = "{0}.{1}.{2}".format(self.major, self.minor, self.patch)
         if self.suffix:
@@ -347,9 +348,9 @@ class Version:
             vstr = "{0}+{1}".format(vstr, self.build)
         return vstr
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return 'code' representation of `Version`."""
-        return "Version('{0}')".format(self.__str__)
+        return f"Version({str(self)})"
 
 
 def retrieve_download(dl):

@@ -27,6 +27,7 @@ import pickle
 import plistlib
 import re
 import shutil
+from statistics import mode
 import string
 import subprocess
 import sys
@@ -41,8 +42,8 @@ except ImportError:  # pragma: no cover
     import xml.etree.ElementTree as ET
 
 # imported to maintain API
-from workflow.util import AcquisitionError  # noqa: F401
-from workflow.util import LockFile, atomic_writer, uninterruptible
+from alfredpy.util import AcquisitionError  # noqa: F401
+from alfredpy.util import LockFile, atomic_writer, uninterruptible
 
 #: Sentinel for properties that haven't been set yet (that might
 #: correctly have the value ``None``)
@@ -477,7 +478,7 @@ class PasswordExists(KeychainError):
 ####################################################################
 
 
-def isascii(text):
+def isascii(text: str) -> bool:
     """Test if ``text`` contains only ASCII characters.
 
     :param text: text to test for ASCII-ness
@@ -498,7 +499,7 @@ def isascii(text):
 ####################################################################
 
 
-class SerializerManager(object):
+class SerializerManager:
     """Contains registered serializers.
 
     .. versionadded:: 1.8
@@ -517,7 +518,7 @@ class SerializerManager(object):
 
     def __init__(self):
         """Create new SerializerManager object."""
-        self._serializers = {}
+        self._serializers: dict = {}
 
     def register(self, name, serializer):
         """Register ``serializer`` object under ``name``.
@@ -963,7 +964,7 @@ class Workflow(object):
         self._bundleid = None
         self._debugging = None
         self._name = None
-        self._cache_serializer = "cpickle"
+        self._cache_serializer: str = "cpickle"
         self._data_serializer = "cpickle"
         self._info: dict | None = None
         self._info_loaded = False
@@ -1373,7 +1374,7 @@ class Workflow(object):
         """
         return os.path.join(self.datadir, filename)
 
-    def workflowfile(self, filename):
+    def workflowfile(self, filename: str) -> str:
         """Return full path to ``filename`` in workflow's root directory.
 
         :param filename: basename of file
@@ -1529,7 +1530,7 @@ class Workflow(object):
         self._cache_serializer = serializer_name
 
     @property
-    def data_serializer(self):
+    def data_serializer(self) -> str:
         """Name of default data serializer.
 
         .. versionadded:: 1.8
@@ -1611,14 +1612,14 @@ class Workflow(object):
 
             return None
 
-        with open(data_path, "r") as file_obj:
+        with open(data_path, "rb") as file_obj:
             data = serializer.load(file_obj)
 
         self.logger.debug("stored data loaded: %s", data_path)
 
         return data
 
-    def store_data(self, name, data, serializer=None):
+    def store_data(self, name: str, data, serializer: str | None = None):
         """Save data to data directory.
 
         .. versionadded:: 1.8
@@ -1679,15 +1680,18 @@ class Workflow(object):
             # Save file extension
             with atomic_writer(metadata_path, "w") as file_obj:
                 file_obj.write(serializer_name)
-
-            with atomic_writer(data_path, "w") as file_obj:
-                serializer.dump(data, file_obj)
+            try:
+                with atomic_writer(data_path, "wb") as file_obj:
+                    serializer.dump(data, file_obj)
+            except TypeError:
+                with atomic_writer(data_path, "w") as file_obj:
+                    serializer.dump(data, file_obj)
 
         _store()
 
         self.logger.debug("saved data: %s", data_path)
 
-    def cached_data(self, name, data_func=None, max_age=60):
+    def cached_data(self, name: str, data_func=None, max_age: int =60):
         """Return cached data if younger than ``max_age`` seconds.
 
         Retrieve data from cache or re-generate and re-cache data if
@@ -1704,13 +1708,15 @@ class Workflow(object):
 
         """
         serializer = manager.serializer(self.cache_serializer)
+        if not serializer:
+            return None
 
         cache_path = self.cachefile("%s.%s" % (name, self.cache_serializer))
         age = self.cached_data_age(name)
 
         if (age < max_age or max_age == 0) and os.path.exists(cache_path):
 
-            with open(cache_path, "r") as file_obj:
+            with open(cache_path, "rb") as file_obj:
                 self.logger.debug("loading cached data: %s", cache_path)
                 return serializer.load(file_obj)
 
@@ -1722,7 +1728,7 @@ class Workflow(object):
 
         return data
 
-    def cache_data(self, name, data):
+    def cache_data(self, name: str, data: object) -> None:
         """Save ``data`` to cache under ``name``.
 
         If ``data`` is ``None``, the corresponding cache file will be
@@ -1734,6 +1740,8 @@ class Workflow(object):
 
         """
         serializer = manager.serializer(self.cache_serializer)
+        if not serializer:
+            return None
 
         cache_path = self.cachefile("%s.%s" % (name, self.cache_serializer))
 
@@ -1742,9 +1750,12 @@ class Workflow(object):
                 os.unlink(cache_path)
                 self.logger.debug("deleted cache file: %s", cache_path)
             return
-
-        with atomic_writer(cache_path, "w") as file_obj:
-            serializer.dump(data, file_obj)
+        try:
+            with atomic_writer(cache_path, "w") as file_obj:
+                serializer.dump(data, file_obj)
+        except TypeError:
+            with atomic_writer(cache_path, "wb") as file_obj:
+                serializer.dump(data, file_obj)
 
         self.logger.debug("cached data: %s", cache_path)
 
@@ -2383,7 +2394,7 @@ class Workflow(object):
             from .background import run_in_background
 
             # update.py is adjacent to this file
-            update_script = os.path.join(os.path.dirname(__file__), b"update.py")
+            update_script = os.path.join(os.path.dirname(__file__), "update.py")
 
             cmd = ["/usr/bin/python", update_script, "check", repo, version]
 
@@ -2763,7 +2774,7 @@ class Workflow(object):
             text = str(text, encoding)
         return unicodedata.normalize(normalization, text)
 
-    def fold_to_ascii(self, text):
+    def fold_to_ascii(self, text: str) -> str:
         """Convert non-ASCII characters to closest ASCII equivalent.
 
         .. versionadded:: 1.3
@@ -2779,7 +2790,7 @@ class Workflow(object):
         if isascii(text):
             return text
         text = "".join([ASCII_REPLACEMENTS.get(c, c) for c in text])
-        return str(unicodedata.normalize("NFKD", text).encode("ascii", "ignore"))
+        return unicodedata.normalize("NFKD", text)
 
     def dumbify_punctuation(self, text):
         """Convert non-ASCII punctuation to closest ASCII equivalent.
