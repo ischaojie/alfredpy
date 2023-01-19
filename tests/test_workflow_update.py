@@ -15,8 +15,8 @@ import os
 import pytest
 import pytest_localserver  # noqa: F401
 
-from workflow import Workflow
-from workflow import update
+from alfredpy import Workflow
+from alfredpy import update
 
 from .conftest import env
 from .util import (
@@ -97,7 +97,7 @@ def test_check_update(httpserver, alfred4):
         update_settings["prereleases"] = True
         with ctx(update_settings=update_settings) as (wf, c):
             wf.run(update)
-            assert c.cmd[0] == "/usr/bin/python"
+            assert c.cmd[0] == "/usr/bin/python3"
             assert c.cmd[2] == "__workflow_update_check"
 
 

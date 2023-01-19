@@ -14,7 +14,7 @@ import time
 
 import pytest
 
-from workflow import manager, Workflow
+from alfredpy import manager, Workflow
 
 from .conftest import env, ENV_V4, ENV_V2
 
@@ -60,14 +60,14 @@ def test_create_directories(alfred4, tempdir):
         wf.reset()
 
 
-def test_cached_data(wf):
+def test_cached_data(wf: Workflow):
     """Cached data stored"""
     data = {'key1': 'value1'}
     d = wf.cached_data('test', lambda: data, max_age=10)
     assert data == d
 
 
-def test_cached_data_deleted(wf):
+def test_cached_data_deleted(wf: Workflow):
     """Cached data deleted"""
     data = {'key1': 'value1'}
     d = wf.cached_data('test', lambda: data, max_age=10)
@@ -192,7 +192,7 @@ def test_cache_serializer(wf):
     assert wf.cache_serializer == 'pickle'
 
 
-def test_alternative_cache_serializer(wf):
+def test_alternative_cache_serializer(wf: Workflow):
     """Alternative cache serializer"""
     data = {'key1': 'value1'}
     assert wf.cache_serializer == 'cpickle'
@@ -260,7 +260,7 @@ def test_data_serializer(wf):
     assert wf.data_serializer == 'pickle'
 
 
-def test_alternative_data_serializer(wf):
+def test_alternative_data_serializer(wf: Workflow):
     """Alternative data serializer"""
     data = {'key1': 'value1'}
     assert wf.data_serializer == 'cpickle'
@@ -305,7 +305,7 @@ def test_borked_stored_data(wf):
 
     wf.store_data('test', data)
     metadata, datapath = _stored_data_paths(wf, 'test', 'cpickle')
-    with open(metadata, 'wb') as file_obj:
+    with open(metadata, 'w') as file_obj:
         file_obj.write('bangers and mash')
         wf.logger.debug('Changed format to `bangers and mash`')
     with pytest.raises(ValueError):

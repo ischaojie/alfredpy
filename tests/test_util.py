@@ -19,7 +19,7 @@ import tempfile
 import pytest
 
 from .conftest import env
-from workflow.util import (
+from alfredpy.util import (
     action_in_alfred,
     appinfo,
     applescriptify,

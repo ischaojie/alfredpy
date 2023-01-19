@@ -17,7 +17,7 @@ import signal
 
 import pytest
 
-from workflow.util import uninterruptible
+from alfredpy.util import uninterruptible
 
 
 class Target(object):

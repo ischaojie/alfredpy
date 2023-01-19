@@ -19,7 +19,7 @@ import pytest
 
 from .util import DEFAULT_SETTINGS
 
-from workflow.util import atomic_writer
+from alfredpy.util import atomic_writer
 
 
 def _settings(tempdir):

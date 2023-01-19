@@ -16,7 +16,7 @@ import unittest
 
 import pytest
 
-from workflow.update import Version
+from alfredpy.update import Version
 
 
 class VersionTests(unittest.TestCase):

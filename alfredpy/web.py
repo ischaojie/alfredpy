@@ -31,9 +31,12 @@ Python library (upon which the `web.py` API is based) or the
 command-line tool `cURL <http://curl.haxx.se/>`_ instead.
 
 """
+from __future__ import annotations
+
 import codecs
 import json
 import mimetypes
+import os
 import random
 import re
 import socket
@@ -120,7 +123,7 @@ class NoRedirectHandler(urllib.request.HTTPRedirectHandler):
         return None
 
 
-class Response(object):
+class Response:
     """
     Returned by :func:`request` / :func:`get` / :func:`post` functions.
 
@@ -176,7 +179,7 @@ class Response(object):
         # Parse additional info if request succeeded
         if not self.error:
             headers: HTTPMessage = self.raw.headers
-            self.transfer_encoding = 'utf-8'
+            self.transfer_encoding = "utf-8"
             self.mimetype = headers.get_content_type()
             for key in list(headers.keys()):
                 self.headers[key.lower()] = headers.get(key)
@@ -268,6 +271,22 @@ class Response(object):
 
         return chunks
 
+    def save_to_path(self, filepath) -> None:
+        """Save retrieved data to file at ``filepath``.
+        .. versionadded: 1.9.6
+        :param filepath: Path to save retrieved data.
+        """
+        filepath = os.path.abspath(filepath)
+        dirname = os.path.dirname(filepath)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+
+        self.stream = True
+
+        with open(filepath, "wb") as fileobj:
+            for data in self.iter_content():
+                fileobj.write(data)
+
     def raise_for_status(self):
         """Raise stored error if one occurred.
 
@@ -308,7 +327,9 @@ class Response(object):
             self.mimetype.startswith("application/")
             or self.mimetype.startswith("text/")
         ) and "xml" in self.mimetype:
-            m = re.search("""<?xml.+encoding=["'](.+?)["'][^>]*\?>""", str(self.content))
+            m = re.search(
+                """<?xml.+encoding=["'](.+?)["'][^>]*\?>""", str(self.content)
+            )
             if m:
                 encoding = m.group(1)
 

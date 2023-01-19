@@ -19,7 +19,7 @@ import time
 import tempfile
 import unittest
 
-from workflow.workflow import Settings
+from alfredpy.workflow import Settings
 
 from tests.util import DEFAULT_SETTINGS
 

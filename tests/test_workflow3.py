@@ -19,7 +19,7 @@ import sys
 
 import pytest
 
-from workflow import ICON_WARNING, Variables, Workflow3
+from alfredpy import ICON_WARNING, Variables, Workflow3
 
 from .test_util import MockCall
 from .conftest import env
@@ -525,9 +525,9 @@ def test_variables_config():
 
 def test_variables_unicode():
     """Unicode handled correctly."""
-    v = Variables(arg=u'fübar', englisch='englisch')
-    v[u'französisch'] = u'französisch'
-    v.config[u'über'] = u'über'
+    v = Variables(arg='fübar', englisch='englisch')
+    v['französisch'] = 'französisch'
+    v.config['über'] = 'über'
     d = {
         'alfredworkflow':
             {

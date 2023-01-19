@@ -13,7 +13,7 @@ import os
 
 import pytest
 
-from workflow.workflow import (
+from alfredpy.workflow import (
     SerializerManager,
     JSONSerializer,
     CPickleSerializer,
@@ -58,13 +58,20 @@ def test_serialization(tempdir, manager):
         path = os.path.join(tempdir, 'test.{0}'.format(name))
         assert not os.path.exists(path)
 
-        with open(path, 'w') as file_obj:
-            serializer.dump(data, file_obj)
+        try:
+            with open(path, 'wb') as file_obj:
+                serializer.dump(data, file_obj)
+        except TypeError:
+            with open(path, 'w', encoding='utf-8') as file_obj:
+                serializer.dump(data, file_obj)
 
         assert os.path.exists(path)
-
-        with open(path, 'r') as file_obj:
-            data2 = serializer.load(file_obj)
+        try:
+            with open(path, 'r') as file_obj:
+                data2 = serializer.load(file_obj)
+        except UnicodeDecodeError:
+            with open(path, 'rb') as file_obj:
+                data2 = serializer.load(file_obj)
 
         assert data == data2
 

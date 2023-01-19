@@ -16,7 +16,7 @@ import os
 
 import pytest
 
-from workflow import Workflow
+from alfredpy import Workflow
 
 from .conftest import env
 from .util import VersionFile, WorkflowMock
