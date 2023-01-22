@@ -492,7 +492,7 @@ def test_run_fails_with_plain_text_output(infopl):
 def test_variables_plain_arg():
     """Arg-only returns string, not JSON."""
     v = Variables(arg='test')
-    assert v == 'test'
+    assert str(v) == 'test'
 
 
 def test_variables_multiple_args(infopl):
@@ -501,13 +501,13 @@ def test_variables_multiple_args(infopl):
     js = '{"alfredworkflow": {"arg": ["one", "two"]}}'
     v = Variables(arg=arg)
     assert v.obj == {'alfredworkflow': {'arg': arg}}
-    assert v == js
+    assert str(v) == js
 
 
 def test_variables_empty():
     """Empty Variables returns empty string."""
     v = Variables()
-    assert v == ''
+    assert str(v) == ''
 
 
 def test_variables():
@@ -544,7 +544,7 @@ def test_variables_unicode():
     assert v.obj == d
 
     # Round-trip to JSON and back
-    d2 = json.loads(v)
+    d2 = json.loads(str(v))
     assert d2 == d
 
 

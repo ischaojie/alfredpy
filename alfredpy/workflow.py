@@ -2432,7 +2432,7 @@ class Workflow(object):
         from .background import run_in_background
 
         # update.py is adjacent to this file
-        update_script = os.path.join(os.path.dirname(__file__), b"update.py")
+        update_script = os.path.join(os.path.dirname(__file__), "update.py")
 
         cmd = ["/usr/bin/python", update_script, "install", repo, version]
 

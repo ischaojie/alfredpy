@@ -110,7 +110,7 @@ class Variables(dict):
         return self.__str__.encode("utf-8")
 
 
-class Modifier(object):
+class Modifier:
     """Modify :class:`Item3` arg/icon/variables when modifier key is pressed.
 
     Don't use this class directly (as it won't be associated with any
@@ -251,7 +251,7 @@ class Modifier(object):
         return icon
 
 
-class Item3(object):
+class Item3:
     """Represents a feedback item for Alfred 3+.
 
     Generates Alfred-compliant JSON for a single item.
