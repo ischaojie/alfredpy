@@ -163,7 +163,7 @@ def test_install_update_prereleases(httpserver, alfred4):
 
             print("Magic update command : {!r}".format(c.cmd))
 
-            assert c.cmd[0] == "/usr/bin/python"
+            assert c.cmd[0] == "/usr/bin/python3"
             assert c.cmd[2] == "__workflow_update_install"
 
         with env(alfred_workflow_version="v10.0-beta"):

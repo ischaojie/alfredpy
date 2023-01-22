@@ -15,3 +15,5 @@
 .tox
 
 temp_*.py
+
+.vscode
