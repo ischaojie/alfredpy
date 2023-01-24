@@ -41,23 +41,51 @@ include = [
 
 [tool.hatch.envs.default]
 dependencies = [
+  "isort",
+  "black",
   "pyobjc-framework-Cocoa",
-  "coverage",
+  "ruff",
+  "bandit",
+]
+[tool.hatch.envs.default.scripts]
+lint = [
+  "isort alfredpy",
+  "black alfredpy",
+  "ruff alfredpy --fix",
+]
+check = [
+  "isort --check --diff alfredpy",
+  "black --check alfredpy",
+  "ruff alfredpy",
+]
+
+[tool.hatch.envs.test]
+dependencies = [
+  "pyobjc-framework-Cocoa",
   "pytest",
   "pytest-cov",
   "pytest-localserver",
-  "flake8",
-  "flake8-docstrings",
-  "bandit",
-  "coveralls",
-  "codacy-coverage",
+  "pytest-pretty",
 ]
-[tool.hatch.envs.default.scripts]
-cov = "coverage run -m pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=alfredpy --cov=tests {args}"
-no-cov = "cov --no-cov {args}"
 
 [[tool.hatch.envs.test.matrix]]
 python = ["37", "38", "39", "310", "311"]
+
+[tool.hatch.envs.test.scripts]
+cov = "pytest --cov-report=term-missing --cov=alfredpy tests/"
+
+[tool.black]
+color = true
+line-length = 120
+target-version = ['py310']
+skip-string-normalization = true
+
+[tool.ruff]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+
 
 [tool.coverage.run]
 branch = true

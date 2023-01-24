@@ -10,36 +10,26 @@ jobs:
   run:
     name: "tests & coverage"
     runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: [ '3.7', '3.8', '3.9', '3.10', '3.11' ]
     env:
-      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      COLUMNS: 120
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.x
+        python-version: ${{ matrix.python-version }}
 
-    - name: Install test dependencies
+    - name: Install
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-test.txt
+        python -m pip install hatch
 
     - name: Lint
-      run: ./run-tests.sh -l
+      run: hatch run check
 
-    - name: Unit tests
-      run: ./run-tests.sh
+    - name: Coverage
+      run: hatch run +py={{ matrix.python-version }} test:cov
 
-    - name: Install coverage dependencies
-      run: pip install -r requirements-ci.txt
-
-    - name: Codacy
-      run: python-codacy-coverage -r coverage.xml -c ${{ github.sha }} || exit 0
-
-    - name: Coveralls
-      run: coveralls || exit 0
-
-    - name: Codecov
-      run: bash <(curl -s https://codecov.io/bash) || exit 0

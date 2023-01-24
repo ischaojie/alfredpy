@@ -18,6 +18,8 @@ See :ref:`setup` in the :ref:`user-manual` for an example of how to set
 up your Python script to best utilise the :class:`Workflow` object.
 
 """
+from __future__ import annotations
+
 import binascii
 import json
 import logging
@@ -27,7 +29,6 @@ import pickle
 import plistlib
 import re
 import shutil
-from statistics import mode
 import string
 import subprocess
 import sys
@@ -776,9 +777,7 @@ class Item(object):
         # Add modifier subtitles
         for mod in ("cmd", "ctrl", "alt", "shift", "fn"):
             if mod in self.modifier_subtitles:
-                ET.SubElement(
-                    root, "subtitle", {"mod": mod}
-                ).text = self.modifier_subtitles[mod]
+                ET.SubElement(root, "subtitle", {"mod": mod}).text = self.modifier_subtitles[mod]
 
         # Add arg as element instead of attribute on <item>, as it's more
         # flexible (newlines aren't allowed in attributes)
@@ -1261,9 +1260,7 @@ class Workflow(object):
     def _default_cachedir(self):
         """Alfred 2's default cache directory."""
         return os.path.join(
-            os.path.expanduser(
-                "~/Library/Caches/com.runningwithcrayons.Alfred-2/" "Workflow Data/"
-            ),
+            os.path.expanduser("~/Library/Caches/com.runningwithcrayons.Alfred-2/" "Workflow Data/"),
             self.bundleid,
         )
 
@@ -1423,9 +1420,7 @@ class Workflow(object):
                 datefmt="%H:%M:%S",
             )
 
-            logfile = logging.handlers.RotatingFileHandler(
-                self.logfile, maxBytes=1024 * 1024, backupCount=1
-            )
+            logfile = logging.handlers.RotatingFileHandler(self.logfile, maxBytes=1024 * 1024, backupCount=1)
             logfile.setFormatter(fmt)
             logger.addHandler(logfile)
 
@@ -1521,8 +1516,7 @@ class Workflow(object):
         """
         if manager.serializer(serializer_name) is None:
             raise ValueError(
-                "Unknown serializer : `{0}`. Register your serializer "
-                "with `manager` first.".format(serializer_name)
+                "Unknown serializer : `{0}`. Register your serializer " "with `manager` first.".format(serializer_name)
             )
 
         self.logger.debug("default cache serializer: %s", serializer_name)
@@ -1564,8 +1558,7 @@ class Workflow(object):
         """
         if manager.serializer(serializer_name) is None:
             raise ValueError(
-                "Unknown serializer : `{0}`. Register your serializer "
-                "with `manager` first.".format(serializer_name)
+                "Unknown serializer : `{0}`. Register your serializer " "with `manager` first.".format(serializer_name)
             )
 
         self.logger.debug("default data serializer: %s", serializer_name)
@@ -1691,7 +1684,7 @@ class Workflow(object):
 
         self.logger.debug("saved data: %s", data_path)
 
-    def cached_data(self, name: str, data_func=None, max_age: int =60):
+    def cached_data(self, name: str, data_func=None, max_age: int = 60):
         """Return cached data if younger than ``max_age`` seconds.
 
         Retrieve data from cache or re-generate and re-cache data if
@@ -1912,9 +1905,7 @@ class Workflow(object):
             return items
 
         # Use user override if there is one
-        fold_diacritics = self.settings.get(
-            "__workflow_diacritic_folding", fold_diacritics
-        )
+        fold_diacritics = self.settings.get("__workflow_diacritic_folding", fold_diacritics)
 
         results = []
 
@@ -1941,9 +1932,7 @@ class Workflow(object):
                 # use "reversed" `score` (i.e. highest becomes lowest) and
                 # `value` as sort key. This means items with the same score
                 # will be sorted in alphabetical not reverse alphabetical order
-                results.append(
-                    ((100.0 / score, value.lower(), score), (item, score, rule))
-                )
+                results.append(((100.0 / score, value.lower(), score), (item, score, rule)))
 
         # sort on keys, then discard the keys
         results.sort(reverse=ascending)
@@ -1998,11 +1987,7 @@ class Workflow(object):
 
         # split the item into "atoms", i.e. words separated by
         # spaces or other non-word characters
-        if (
-            match_on & MATCH_ATOM
-            or match_on & MATCH_INITIALS_CONTAIN
-            or match_on & MATCH_INITIALS_STARTSWITH
-        ):
+        if match_on & MATCH_ATOM or match_on & MATCH_INITIALS_CONTAIN or match_on & MATCH_INITIALS_STARTSWITH:
             atoms = [s.lower() for s in split_on_delimiters(value)]
             # print('atoms : %s  -->  %s' % (value, atoms))
             # initials of the atoms
@@ -2045,9 +2030,7 @@ class Workflow(object):
             search = self._search_for_query(query)
             match = search(value)
             if match:
-                score = 100.0 / (
-                    (1 + match.start()) * (match.end() - match.start() + 1)
-                )
+                score = 100.0 / ((1 + match.start()) * (match.end() - match.start() + 1))
 
                 return (score, MATCH_ALLCHARS)
 
@@ -2098,9 +2081,7 @@ class Workflow(object):
         # to catch any errors and display an error message in Alfred
         try:
             if self.version:
-                self.logger.debug(
-                    "---------- %s (%s) ----------", self.name, self.version
-                )
+                self.logger.debug("---------- %s (%s) ----------", self.name, self.version)
             else:
                 self.logger.debug("---------- %s ----------", self.name)
 
@@ -2134,16 +2115,12 @@ class Workflow(object):
                         name = self._bundleid
                     else:  # pragma: no cover
                         name = os.path.dirname(__file__)
-                    self.add_item(
-                        "Error in workflow '%s'" % name, str(err), icon=ICON_ERROR
-                    )
+                    self.add_item("Error in workflow '%s'" % name, str(err), icon=ICON_ERROR)
                     self.send_feedback()
             return 1
 
         finally:
-            self.logger.debug(
-                "---------- finished in %0.3fs ----------", time.time() - start
-            )
+            self.logger.debug("---------- finished in %0.3fs ----------", time.time() - start)
 
         return 0
 
@@ -2471,9 +2448,7 @@ class Workflow(object):
             service = self.bundleid
 
         try:
-            self._call_security(
-                "add-generic-password", service, account, "-w", password
-            )
+            self._call_security("add-generic-password", service, account, "-w", password)
             self.logger.debug("saved password : %s:%s", service, account)
 
         except PasswordExists:
@@ -2485,9 +2460,7 @@ class Workflow(object):
 
             else:
                 self.delete_password(account, service)
-                self._call_security(
-                    "add-generic-password", service, account, "-w", password
-                )
+                self._call_security("add-generic-password", service, account, "-w", password)
                 self.logger.debug("save_password : %s:%s", service, account)
 
     def get_password(self, account, service=None):
@@ -2513,9 +2486,7 @@ class Workflow(object):
         # Parsing of `security` output is adapted from python-keyring
         # by Jason R. Coombs
         # https://pypi.python.org/pypi/keyring
-        m = re.search(
-            r'password:\s*(?:0x(?P<hex>[0-9A-F]+)\s*)?(?:"(?P<pw>.*)")?', output
-        )
+        m = re.search(r'password:\s*(?:0x(?P<hex>[0-9A-F]+)\s*)?(?:"(?P<pw>.*)")?', output)
 
         if m:
             groups = m.groupdict()
@@ -2563,31 +2534,15 @@ class Workflow(object):
 
             return wrapper
 
-        self.magic_arguments["delcache"] = callback(
-            self.clear_cache, "Deleted workflow cache"
-        )
-        self.magic_arguments["deldata"] = callback(
-            self.clear_data, "Deleted workflow data"
-        )
-        self.magic_arguments["delsettings"] = callback(
-            self.clear_settings, "Deleted workflow settings"
-        )
+        self.magic_arguments["delcache"] = callback(self.clear_cache, "Deleted workflow cache")
+        self.magic_arguments["deldata"] = callback(self.clear_data, "Deleted workflow data")
+        self.magic_arguments["delsettings"] = callback(self.clear_settings, "Deleted workflow settings")
         self.magic_arguments["reset"] = callback(self.reset, "Reset workflow")
-        self.magic_arguments["openlog"] = callback(
-            self.open_log, "Opening workflow log file"
-        )
-        self.magic_arguments["opencache"] = callback(
-            self.open_cachedir, "Opening workflow cache directory"
-        )
-        self.magic_arguments["opendata"] = callback(
-            self.open_datadir, "Opening workflow data directory"
-        )
-        self.magic_arguments["openworkflow"] = callback(
-            self.open_workflowdir, "Opening workflow directory"
-        )
-        self.magic_arguments["openterm"] = callback(
-            self.open_terminal, "Opening workflow root directory in Terminal"
-        )
+        self.magic_arguments["openlog"] = callback(self.open_log, "Opening workflow log file")
+        self.magic_arguments["opencache"] = callback(self.open_cachedir, "Opening workflow cache directory")
+        self.magic_arguments["opendata"] = callback(self.open_datadir, "Opening workflow data directory")
+        self.magic_arguments["openworkflow"] = callback(self.open_workflowdir, "Opening workflow directory")
+        self.magic_arguments["openterm"] = callback(self.open_terminal, "Opening workflow root directory in Terminal")
 
         # Diacritic folding
         def fold_on():
@@ -2837,7 +2792,7 @@ class Workflow(object):
     def _load_info_plist(self):
         """Load workflow info from ``info.plist``."""
         # info.plist should be in the directory above this one
-        with open(self.workflowfile("info.plist"), 'rb') as fp:
+        with open(self.workflowfile("info.plist"), "rb") as fp:
             self._info = plistlib.load(fp)
         self._info_loaded = True
 

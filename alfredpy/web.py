@@ -45,7 +45,7 @@ import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
-from builtins import object, range, str
+from builtins import range, str
 from http.client import HTTPMessage, HTTPResponse
 
 USER_AGENT = "alfred-workflow-0.1"
@@ -146,7 +146,6 @@ class Response:
         """Call `request` with :mod:`urllib2` and process results.
 
         :param request: :class:`urllib2.Request` instance
-
         """
 
         self.request = request
@@ -323,13 +322,8 @@ class Response:
             if m:
                 encoding = m.group(1)
 
-        elif (
-            self.mimetype.startswith("application/")
-            or self.mimetype.startswith("text/")
-        ) and "xml" in self.mimetype:
-            m = re.search(
-                """<?xml.+encoding=["'](.+?)["'][^>]*\?>""", str(self.content)
-            )
+        elif (self.mimetype.startswith("application/") or self.mimetype.startswith("text/")) and "xml" in self.mimetype:
+            m = re.search(r"""<?xml.+encoding=["'](.+?)["'][^>]*\?>""", str(self.content))
             if m:
                 encoding = m.group(1)
 
@@ -504,7 +498,8 @@ def encode_multipart_formdata(fields, files):
         }
 
     - ``fieldname`` is the name of the field in the HTML form.
-    - ``mimetype`` is optional. If not provided, :mod:`mimetypes` will be used to guess the mimetype, or ``application/octet-stream`` will be used.
+    - ``mimetype`` is optional. If not provided, :mod:`mimetypes` will be used to guess the mimetype,
+        or ``application/octet-stream`` will be used.
 
     """
 
@@ -550,10 +545,7 @@ def encode_multipart_formdata(fields, files):
         if isinstance(mimetype, str):
             mimetype = mimetype.encode("utf-8")
         output.append("--" + boundary)
-        output.append(
-            "Content-Disposition: form-data; "
-            'name="%s"; filename="%s"' % (name, filename)
-        )
+        output.append("Content-Disposition: form-data; " 'name="%s"; filename="%s"' % (name, filename))
         output.append("Content-Type: %s" % mimetype)
         output.append("")
         output.append(content)

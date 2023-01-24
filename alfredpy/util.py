@@ -157,7 +157,7 @@ def run_command(cmd: list, **kwargs):
 
     """
     cmd = [str(s) for s in cmd]
-    return subprocess.check_output(cmd, encoding='utf-8', **kwargs)
+    return subprocess.check_output(cmd, encoding="utf-8", **kwargs)
 
 
 def run_applescript(script, *args, **kwargs):
@@ -375,9 +375,7 @@ def reload_workflow(bundleid=None):
     """
     bundleid = bundleid or os.getenv("alfred_workflow_bundleid")
     appname = jxa_app_name()
-    script = JXA_RELOAD_WORKFLOW.format(
-        app=json.dumps(appname), arg=json.dumps(bundleid)
-    )
+    script = JXA_RELOAD_WORKFLOW.format(app=json.dumps(appname), arg=json.dumps(bundleid))
 
     run_applescript(script, lang="JavaScript")
 
