@@ -31,5 +31,5 @@ jobs:
       run: hatch run check
 
     - name: Coverage
-      run: hatch run +py={{ matrix.python-version }} test:cov
+      run: hatch run test:cov
 
