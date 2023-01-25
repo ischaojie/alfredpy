@@ -890,7 +890,7 @@ class Settings(dict):
         return ret
 
 
-class Workflow(object):
+class Workflow:
     """The ``Workflow`` object is the main interface to Alfred-Workflow.
 
     It provides APIs for accessing the Alfred/workflow environment,

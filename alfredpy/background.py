@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
 #
 # Copyright (c) 2014 deanishe@deanishe.net
 #
@@ -23,7 +21,6 @@ import pickle
 import signal
 import subprocess
 import sys
-from builtins import str
 from typing import Any
 
 from alfredpy import Workflow

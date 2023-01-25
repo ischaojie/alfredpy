@@ -31,5 +31,7 @@ jobs:
       run: hatch run check
 
     - name: Coverage
-      run: hatch run test:cov
+      run: |
+        export PYTHONPATH=.
+        hatch run test:cov
 

@@ -22,8 +22,7 @@ It works by copying a simple application to your workflow's data
 directory. It replaces the application's icon with your workflow's
 icon and then calls the application to post notifications.
 """
-
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import annotations
 
 import os
 import plistlib
@@ -35,7 +34,7 @@ import tempfile
 import uuid
 from builtins import str
 
-from . import workflow
+from alfredpy import workflow
 
 _wf = None
 _log = None

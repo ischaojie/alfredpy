@@ -31,9 +31,7 @@ from builtins import str
 from collections import defaultdict
 from functools import total_ordering
 
-from alfredpy import web
-
-from . import workflow
+from alfredpy import web, workflow
 
 # __all__ = []
 
