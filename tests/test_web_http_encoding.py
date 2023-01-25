@@ -9,11 +9,12 @@
 #
 
 """HTTP unit tests."""
+from __future__ import annotations
+
 import os
 
 import pytest
 import pytest_localserver  # noqa: F401
-
 
 from alfredpy import web
 
