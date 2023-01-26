@@ -37,3 +37,6 @@ jobs:
         export PYTHONPATH=.
         hatch run test:cov
 
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v3
+

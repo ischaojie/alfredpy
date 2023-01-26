@@ -72,7 +72,7 @@ dependencies = [
 python = ["37", "38", "39", "310", "311"]
 
 [tool.hatch.envs.test.scripts]
-cov = "pytest --cov-report=term-missing --cov=alfredpy tests/"
+cov = "pytest --cov-report=term-missing --cov=alfredpy --cov-report=xml tests/"
 
 [tool.black]
 color = true
