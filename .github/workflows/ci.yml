@@ -10,9 +10,6 @@ jobs:
   run:
     name: "tests & coverage"
     runs-on: macos-latest
-    strategy:
-      matrix:
-        python-version: [ '3.7', '3.8', '3.9', '3.10', '3.11' ]
     env:
       COLUMNS: 120
 
@@ -21,9 +18,14 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: |
+          3.7
+          3.8
+          3.9
+          3.10
+          3.11
 
-    - name: Install
+    - name: Install hatch
       run: |
         python -m pip install hatch
 
