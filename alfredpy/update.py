@@ -22,17 +22,16 @@
 """
 from __future__ import annotations
 
+import json
+import os
+import re
+import subprocess
+import tempfile
 from builtins import str
 from collections import defaultdict
 from functools import total_ordering
-import json
-import os
-import tempfile
-import re
-import subprocess
 
-from . import workflow
-from alfredpy import web
+from alfredpy import web, workflow
 
 # __all__ = []
 
@@ -183,6 +182,7 @@ class Download:
         )
 
         return u
+
     __repr__ = __str__
 
     def __eq__(self, other):
@@ -307,9 +307,7 @@ class Version:
                 return True
             if other.suffix and not self.suffix:
                 return False
-            return self._parse_dotted_string(self.suffix) < self._parse_dotted_string(
-                other.suffix
-            )
+            return self._parse_dotted_string(self.suffix) < self._parse_dotted_string(other.suffix)
         # t > o
         return False
 
