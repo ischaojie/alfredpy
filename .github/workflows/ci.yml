@@ -33,7 +33,7 @@ jobs:
     - name: Coverage
       run: |
         export PYTHONPATH=.
-        hatch run +py={{ matrix.python-version }}  test:cov
+        hatch run +py=${{ matrix.python-version }}  test:cov
 
     - name: Upload Coverage
       uses: codecov/codecov-action@v3
