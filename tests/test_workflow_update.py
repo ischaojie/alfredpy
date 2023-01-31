@@ -15,8 +15,8 @@ import os
 import pytest
 import pytest_localserver  # noqa: F401
 
-from alfredpy import Workflow
-from alfredpy import update
+from ualfred import Workflow
+from ualfred import update
 
 from .conftest import env
 from .util import (

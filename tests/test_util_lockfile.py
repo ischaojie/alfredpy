@@ -22,8 +22,8 @@ import traceback
 
 import pytest
 
-from alfredpy.util import AcquisitionError, LockFile
-from alfredpy.workflow import Settings
+from ualfred.util import AcquisitionError, LockFile
+from ualfred.workflow import Settings
 
 
 Paths = namedtuple('Paths', 'testfile lockfile')

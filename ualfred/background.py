@@ -23,7 +23,7 @@ import subprocess
 import sys
 from typing import Any
 
-from alfredpy import Workflow
+from ualfred import Workflow
 
 __all__ = ["is_running", "run_in_background"]
 

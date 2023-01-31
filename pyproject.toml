@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "alfredpy"
-description = 'Writing Alfred workflow using Python3'
+name = "ualfred"
+description = 'Modern Alfred workflow library for Python3'
 readme = "README.md"
 requires-python = ">=3.7"
 license = "MIT"
@@ -30,17 +30,17 @@ dependencies = []
 dynamic = ["version"]
 
 [project.urls]
-Documentation = "https://github.com/ischaojie/alfredpy#readme"
-Issues = "https://github.com/ischaojie/alfredpy/issues"
-Source = "https://github.com/ischaojie/alfredpy"
+Documentation = "https://github.com/ischaojie/ualfred#readme"
+Issues = "https://github.com/ischaojie/ualfred/issues"
+Source = "https://github.com/ischaojie/ualfred"
 
 [tool.hatch.version]
-path = "alfredpy/__init__.py"
+path = "ualfred/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
-  "alfredpy",
-  "alfredpy/Notify.tgz"
+  "ualfred",
+  "ualfred/Notify.tgz"
 ]
 
 [tool.hatch.envs.default]
@@ -53,14 +53,14 @@ dependencies = [
 ]
 [tool.hatch.envs.default.scripts]
 lint = [
-  "isort alfredpy",
-  "black alfredpy",
-  "ruff alfredpy --fix",
+  "isort ualfred",
+  "black ualfred",
+  "ruff ualfred --fix",
 ]
 check = [
-  "isort --check --diff alfredpy",
-  "black --check alfredpy",
-  "ruff alfredpy",
+  "isort --check --diff ualfred",
+  "black --check ualfred",
+  "ruff ualfred",
 ]
 
 [tool.hatch.envs.test]
@@ -76,7 +76,7 @@ dependencies = [
 python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
 
 [tool.hatch.envs.test.scripts]
-cov = "pytest --cov-report=term-missing --cov=alfredpy --cov-report=xml tests/"
+cov = "pytest --cov-report=term-missing --cov=ualfred --cov-report=xml tests/"
 
 [tool.black]
 color = true
@@ -95,11 +95,11 @@ profile = "black"
 branch = true
 parallel = true
 omit = [
-  "alfredpy/__init__.py",
+  "ualfred/__init__.py",
 ]
 
 [tool.coverage.report]
-include = ["alfredpy/*"]
+include = ["ualfred/*"]
 show_missing = true
 exclude_lines = [
   # Have to re-enable the standard pragma

@@ -13,7 +13,7 @@ import os
 
 import pytest
 
-from alfredpy.workflow import Workflow
+from ualfred.workflow import Workflow
 
 from .conftest import (
     env, COMMON, ENV_V4,

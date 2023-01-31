@@ -17,7 +17,7 @@ import signal
 
 import pytest
 
-from alfredpy.util import uninterruptible
+from ualfred.util import uninterruptible
 
 
 class Target(object):

@@ -19,7 +19,7 @@ import tempfile
 import pytest
 
 from .conftest import env
-from alfredpy.util import (
+from ualfred.util import (
     action_in_alfred,
     appinfo,
     applescriptify,

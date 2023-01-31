@@ -26,7 +26,7 @@ import json
 import os
 import sys
 
-from alfredpy.workflow import ICON_WARNING, Workflow
+from ualfred.workflow import ICON_WARNING, Workflow
 
 
 class Variables(dict):

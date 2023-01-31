@@ -13,7 +13,7 @@ import sys
 
 import pytest
 
-from alfredpy.workflow import Workflow
+from ualfred.workflow import Workflow
 
 
 LIBS = [os.path.join(os.path.dirname(__file__), 'lib')]

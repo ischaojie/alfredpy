@@ -17,8 +17,8 @@ import pytest
 import pytest_localserver  # noqa: F401
 
 from .util import WorkflowMock
-from alfredpy import Workflow, update, web
-from alfredpy.update import Download, Version
+from ualfred import Workflow, update, web
+from ualfred.update import Download, Version
 
 # Where test data is
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')

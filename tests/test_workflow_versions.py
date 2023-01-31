@@ -10,9 +10,9 @@ from __future__ import print_function, unicode_literals
 
 import pytest
 
-from alfredpy.update import Version
-from alfredpy.workflow import Workflow
-from alfredpy.workflow3 import Workflow3
+from ualfred.update import Version
+from ualfred.workflow import Workflow
+from ualfred.workflow3 import Workflow3
 
 from .conftest import env, WORKFLOW_VERSION
 from .util import VersionFile

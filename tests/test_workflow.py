@@ -17,7 +17,7 @@ from unicodedata import normalize
 
 import pytest
 
-from alfredpy import Workflow
+from ualfred import Workflow
 
 from .conftest import env
 
@@ -98,10 +98,10 @@ def test_logger(wf):
 @pytest.mark.skip
 def test_icons():
     """Icons"""
-    import alfredpy
-    for name in dir(alfredpy):
+    import ualfred
+    for name in dir(ualfred):
         if name.startswith('ICON_'):
-            path = getattr(alfredpy, name)
+            path = getattr(ualfred, name)
             print(name, path)
             assert os.path.exists(path)
 
