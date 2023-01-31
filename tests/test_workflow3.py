@@ -19,7 +19,7 @@ import sys
 
 import pytest
 
-from alfredpy import ICON_WARNING, Variables, Workflow3
+from ualfred import ICON_WARNING, Variables, Workflow3
 
 from .test_util import MockCall
 from .conftest import env

@@ -34,7 +34,7 @@ import tempfile
 import uuid
 from builtins import str
 
-from alfredpy import workflow
+from ualfred import workflow
 
 _wf = None
 _log = None

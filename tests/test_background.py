@@ -14,8 +14,8 @@ from time import sleep
 
 import pytest
 
-from alfredpy import Workflow
-from alfredpy.background import is_running, kill, run_in_background
+from ualfred import Workflow
+from ualfred.background import is_running, kill, run_in_background
 
 
 def _pidfile(name):

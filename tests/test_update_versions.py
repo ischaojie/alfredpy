@@ -16,7 +16,7 @@ import unittest
 
 import pytest
 
-from alfredpy.update import Version
+from ualfred.update import Version
 
 
 class VersionTests(unittest.TestCase):

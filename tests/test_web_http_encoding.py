@@ -16,7 +16,7 @@ import os
 import pytest
 import pytest_localserver  # noqa: F401
 
-from alfredpy import web
+from ualfred import web
 
 TEST_DATA: list[tuple] = [
     # Document specifies us-ascii

@@ -9,8 +9,8 @@
 from __future__ import print_function, unicode_literals
 
 import pytest
-from alfredpy import Workflow
-from alfredpy.workflow import (
+from ualfred import Workflow
+from ualfred.workflow import (
     MATCH_ALL, MATCH_ALLCHARS,
     MATCH_ATOM, MATCH_CAPITALS, MATCH_STARTSWITH,
     MATCH_SUBSTRING, MATCH_INITIALS_CONTAIN,

@@ -10,7 +10,7 @@ from __future__ import print_function
 
 import pytest
 
-from alfredpy import Workflow
+from ualfred import Workflow
 
 from .conftest import env
 from .util import VersionFile, WorkflowMock

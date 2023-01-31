@@ -21,8 +21,8 @@ import stat
 
 import pytest
 
-from alfredpy import notify
-from alfredpy.workflow import Workflow
+from ualfred import notify
+from ualfred.workflow import Workflow
 
 from .conftest import BUNDLE_ID
 from .util import (

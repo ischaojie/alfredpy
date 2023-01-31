@@ -14,7 +14,7 @@ import time
 
 import pytest
 
-from alfredpy import manager, Workflow
+from ualfred import manager, Workflow
 
 from .conftest import env, ENV_V4, ENV_V2
 

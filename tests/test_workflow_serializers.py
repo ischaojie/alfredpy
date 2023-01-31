@@ -13,7 +13,7 @@ import os
 
 import pytest
 
-from alfredpy.workflow import (
+from ualfred.workflow import (
     SerializerManager,
     JSONSerializer,
     CPickleSerializer,

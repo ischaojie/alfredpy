@@ -19,7 +19,7 @@ from xml.etree import ElementTree as ET
 
 import pytest
 
-from alfredpy import Workflow
+from ualfred import Workflow
 
 
 @pytest.fixture(scope='function')

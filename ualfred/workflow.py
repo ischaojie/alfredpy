@@ -43,8 +43,8 @@ except ImportError:  # pragma: no cover
     import xml.etree.ElementTree as ET
 
 # imported to maintain API
-from alfredpy.util import AcquisitionError  # noqa: F401
-from alfredpy.util import LockFile, atomic_writer, uninterruptible
+from ualfred.util import AcquisitionError  # noqa: F401
+from ualfred.util import LockFile, atomic_writer, uninterruptible
 
 #: Sentinel for properties that haven't been set yet (that might
 #: correctly have the value ``None``)
