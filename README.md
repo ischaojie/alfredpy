@@ -2,20 +2,19 @@
   <img src="./icon.png" alt="Alfred-Workflow logo" height="200">
 </div>
 
-Alfredpy
+ualfred
 ===============
 
-A helper library in Python for authors of workflows for [Alfred](https://www.alfredapp.com/).
+Modern [Alfred](https://www.alfredapp.com/) workflow library for Python3.
 
 > **Note**
-> 
-> This project is based on [deanishe/alfred-workflow](https://github.com/deanishe/alfred-workflow), and
-> try to make it compatible with python3.
+>
+> This project is based on [deanishe/alfred-workflow](https://github.com/deanishe/alfred-workflow), and make it compatible with Python3.
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ischaojie/alfredpy/ci.yml?branch=master&style=flat-square)
-[![codecov](https://codecov.io/gh/ischaojie/alfredpy/branch/master/graph/badge.svg?token=FPBE0LGDCO)](https://codecov.io/gh/ischaojie/alfredpy)
-[![PyPI](https://img.shields.io/pypi/v/alfredpy?style=flat-square)](https://pypi.org/project/alfredpy/)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/alfredpy?style=flat-square)
-![GitHub](https://img.shields.io/github/license/ischaojie/alfredpy?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ischaojie/ualfred/ci.yml?branch=master&style=flat-square)
+[![codecov](https://codecov.io/gh/ischaojie/ualfred/branch/master/graph/badge.svg?token=FPBE0LGDCO)](https://codecov.io/gh/ischaojie/ualfred)
+[![PyPI](https://img.shields.io/pypi/v/ualfred?style=flat-square)](https://pypi.org/project/ualfred/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ualfred?style=flat-square)
+![GitHub](https://img.shields.io/github/license/ischaojie/ualfred?style=flat-square)
 
 For full usage documentation, see the origin project [docs](https://www.deanishe.net/alfred-workflow/).
