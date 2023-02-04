@@ -191,7 +191,7 @@ class Response:
 
         """
 
-        return json.loads(self.content, self.encoding or "utf-8")
+        return json.loads(self.content)
 
     @property
     def encoding(self) -> str | None:
