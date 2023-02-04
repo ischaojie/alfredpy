@@ -563,7 +563,6 @@ if __name__ == "__main__":  # pragma: nocover
     version = argv[3]
 
     try:
-
         if action == "check":
             check_update(repo, version, prereleases)
         elif action == "install":

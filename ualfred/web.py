@@ -245,7 +245,6 @@ class Response:
         """
 
         def decode_stream(iterator, r):
-
             decoder = codecs.getincrementaldecoder(r.encoding)(errors="replace")
 
             for chunk in iterator:
@@ -520,7 +519,7 @@ def encode_multipart_formdata(fields, files):
     output = []
 
     # Normal form fields
-    for (name, value) in list(fields.items()):
+    for name, value in list(fields.items()):
         if isinstance(name, str):
             name = name.encode("utf-8")
         if isinstance(value, str):
