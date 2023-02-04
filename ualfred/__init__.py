@@ -51,7 +51,7 @@ from .workflow import (
 )
 from .workflow3 import Variables, Workflow3
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 __all__ = [
     "Variables",

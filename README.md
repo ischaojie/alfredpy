@@ -18,3 +18,11 @@ Modern [Alfred](https://www.alfredapp.com/) workflow library for Python3.
 ![GitHub](https://img.shields.io/github/license/ischaojie/ualfred?style=flat-square)
 
 For full usage documentation, see the origin project [docs](https://www.deanishe.net/alfred-workflow/).
+
+And don't forget to replace import statements from `workflow` to `ualfred`:
+```python
+# replace this:
+# from workflow import *
+# to
+from ualfred import *
+```

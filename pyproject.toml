@@ -46,7 +46,7 @@ include = [
 [tool.hatch.envs.default]
 dependencies = [
   "isort",
-  "black",
+  "black==23.1.a1",
   "pyobjc-framework-Cocoa",
   "ruff",
   "bandit",

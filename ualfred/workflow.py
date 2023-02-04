@@ -1078,7 +1078,6 @@ class Workflow:
             "workflow_uid",
             "workflow_version",
         ):
-
             value = os.getenv("alfred_" + key, "")
 
             if value:
@@ -1160,7 +1159,6 @@ class Workflow:
 
         """
         if self._version is UNSET:
-
             version = None
             # environment variable has priority
             if self.alfred_env.get("workflow_version"):
@@ -1318,7 +1316,6 @@ class Workflow:
 
             # climb the directory tree until we find `info.plist`
             for dirpath in candidates:
-
                 # Ensure directory path is Unicode
                 dirpath = self.decode(dirpath)
 
@@ -1414,7 +1411,6 @@ class Workflow:
         # Exclude from coverage, as pytest will have configured the
         # root logger already
         if not len(logger.handlers):  # pragma: no cover
-
             fmt = logging.Formatter(
                 "%(asctime)s %(filename)s:%(lineno)s" " %(levelname)-8s %(message)s",
                 datefmt="%H:%M:%S",
@@ -1630,6 +1626,7 @@ class Workflow:
         :returns: data in datastore or ``None``
 
         """
+
         # Ensure deletion is not interrupted by SIGTERM
         @uninterruptible
         def delete_paths(paths):
@@ -1708,7 +1705,6 @@ class Workflow:
         age = self.cached_data_age(name)
 
         if (age < max_age or max_age == 0) and os.path.exists(cache_path):
-
             with open(cache_path, "rb") as file_obj:
                 self.logger.debug("loading cached data: %s", cache_path)
                 return serializer.load(file_obj)
@@ -1935,7 +1931,7 @@ class Workflow:
                 results.append(((100.0 / score, value.lower(), score), (item, score, rule)))
 
         # sort on keys, then discard the keys
-        results.sort(reverse=ascending)
+        results.sort(key=lambda x: x[0], reverse=ascending)
         results = [t[1] for t in results]
 
         if min_score:
@@ -1967,7 +1963,6 @@ class Workflow:
         # pre-filter any items that do not contain all characters
         # of ``query`` to save on running several more expensive tests
         if not set(query) <= set(value.lower()):
-
             return (0, None)
 
         # item starts with query
@@ -2258,7 +2253,6 @@ class Workflow:
 
         """
         if self._last_version_run is UNSET:
-
             version = self.settings.get("__workflow_last_version")
             if version:
                 from .update import Version
@@ -2363,7 +2357,6 @@ class Workflow:
 
         # Check for new version if it's time
         if force or not self.cached_data_fresh(key, frequency * 86400):
-
             repo = self._update_settings["github_slug"]
             # version = self._update_settings['version']
             version = str(self.version)
@@ -2525,6 +2518,7 @@ class Workflow:
 
     def _register_default_magic(self):
         """Register the built-in magic arguments."""
+
         # TODO: refactor & simplify
         # Wrap callback and message with callable
         def callback(func, msg):
