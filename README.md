@@ -10,11 +10,13 @@ Modern [Alfred](https://www.alfredapp.com/) workflow library for Python3.
 > **Note**
 >
 > This project is based on [deanishe/alfred-workflow](https://github.com/deanishe/alfred-workflow), and make it compatible with Python3.
+>
+> Currently, the test passed on Python3.7~3.11.
 
-Install uaflred directly into your workflow with:
+Install `uaflred` directly into your workflow with:
 
 ```bash
-python -m pip install --target=/path/to/my/workflow ualfred
+pip install --target=/path/to/my/workflow ualfred
 ```
 
 For full usage documentation, see the origin project [docs](https://www.deanishe.net/alfred-workflow/). And don't forget to replace import statements from `workflow` to `ualfred`:
